@@ -1,5 +1,5 @@
-/* FILENAME REFFILE '/home/mwolfe0/train.csv'; */
-FILENAME REFFILE '/folders/myfolders/MSDS6371/GroupProject/Datasets/train.csv';
+FILENAME REFFILE '/home/mwolfe0/train.csv';
+/* FILENAME REFFILE '/folders/myfolders/MSDS6371/GroupProject/Datasets/train.csv'; */
 
 
 PROC IMPORT DATAFILE=REFFILE DBMS=CSV REPLACE OUT=HOMES;
