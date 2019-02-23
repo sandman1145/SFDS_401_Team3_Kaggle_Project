@@ -1,112 +1,262 @@
-/* FILENAME REFFILE '/home/mwolfe0/train.csv'; */
-FILENAME REFFILE '/folders/myfolders/MSDS6371/GroupProject/Datasets/train.csv';
+*--------------------------------------------------------*
+| Import train.csv                                       |
+| Set REFFILE for train.csv                              |
+*--------------------------------------------------------*;
 
+* FILENAME REFFILE '/home/mwolfe0/train.csv';
+FILENAME REFFILE 
+'/folders/myfolders/MSDS6371/GroupProject/Datasets/train.csv';
 
-PROC IMPORT DATAFILE=REFFILE DBMS=CSV REPLACE OUT=HOMES;
+PROC IMPORT DATAFILE=REFFILE DBMS=CSV REPLACE OUT=TRAIN;
 	GETNAMES=YES;
 RUN;
 
-PROC UNIVARIATE DATA=HOMES;
-	VAR GrLIvArea SalePrice;
+*--------------------------------------------------------*
+| Subset the data to only include homes sold in the      |
+| neighborhoods of interest - NAmes, BrkSide, and Edwards|
+| Round the gross living area to the nearest 100 SF      |
+| Keep only the variables of Neighboorhood, GrLivArea,   |
+| and SalePrice in the dataset                           |
+*--------------------------------------------------------*;
+
+DATA HOMES1;
+SET TRAIN (KEEP=Neighborhood GrLivArea SalePrice);
+IF Neighborhood EQ "NAmes" | 
+   Neighborhood EQ "BrkSide" | 
+   Neighborhood EQ "Edwards";
+GrLivArea100 = ROUND(GrLivArea, 100); /*FLOOR(GrLivArea);*/
 RUN;
 
-PROC SGPLOT DATA=HOMES;
-	SCATTER X=GrLIvArea Y=SalePrice;
-	REG X=GrLIvArea Y=SalePrice;
+*--------------------------------------------------------*
+| Descriptive statistics on the HOMES1 dataset for       |
+| GrLivArea and SalePrice                                |
+*--------------------------------------------------------*;
+
+PROC UNIVARIATE DATA=HOMES1;
+	CLASS Neighborhood;
+	VAR GrLivArea SalePrice;
 RUN;
 
-PROC REG DATA=HOMES;
-	MODEL SalePrice=GrLIvArea;
+*--------------------------------------------------------*
+| Scatter plot of sale prices in the three neighborhoods |
+| vs Gross Living Area                                   |
+*--------------------------------------------------------*;
+
+PROC SGPLOT DATA=HOMES1;
+	SCATTER X=GrLivArea Y=SalePrice;
+	REG X=GrLivArea Y=SalePrice;
+RUN;
+
+*--------------------------------------------------------*
+| Regression model of homes in the three neighborhoods   |
+| combined for Sale Price based on Gross Living Area     |
+| to check assumptions on the data in these three        |
+| neighborhoods                                          |
+*--------------------------------------------------------*;
+
+PROC REG DATA=HOMES1;
+	MODEL SalePrice=GrLivArea / CLB;
 	RUN;
 
-PROC GLM DATA=HOMES;
-	CLASS=Neighborhood;
-	MODEL SalePrice=GrLIvArea;
+*--------------------------------------------------------*
+| Regression model of homes in the three neighborhoods   |
+| using an equal slope model                             |
+*--------------------------------------------------------*;
+
+PROC GLM DATA=HOMES1;
+	CLASS Neighborhood;
+	MODEL SalePrice=GrLivArea Neighborhood / CLPARM;
 	RUN;
 
-/* Subset for homes in the neighborhoods of interest */
-/* Subset the data to include only the neighborhoods of interest */
-DATA HOMESP1a;
-SET HOMES;
-IF Neighborhood EQ "NAmes" | Neighborhood EQ "BrkSide" | Neighborhood EQ "Edwards";
-/*IF GrLivArea LT 4000;*/
+*--------------------------------------------------------*
+| Regression model of homes in the three neighborhoods   |
+| using an equal intercept model (slopes differ)         |
+*--------------------------------------------------------*;
+
+PROC GLM DATA=HOMES1;
+	CLASS Neighborhood;
+	MODEL SalePrice=GrLivArea*Neighborhood / CLPARM;
+	RUN;
+
+*--------------------------------------------------------*
+| Regression model of homes in the three neighborhoods   |
+| using a model that allows slopes and intercepts to     |
+| vary                                                   |
+*--------------------------------------------------------*;
+
+PROC GLM DATA=HOMES1;
+	CLASS Neighborhood;
+	MODEL SalePrice=Neighborhood GrLivArea*Neighborhood / CLPARM;
+	RUN;
+	
+*--------------------------------------------------------*
+| Remove Outliers:                                       |
+| SaleCondition is not normal (confounding effect on     |
+| prices)                                                |
+| SalePrice is greater than 300,000 since they are not   |
+| representative of the overall population in these      |
+| three neighborhoods.                                   |
+| Keep only the variables of Neighboorhood, GrLivArea,   |
+| and SalePrice in the dataset                           |
+*--------------------------------------------------------*;
+
+DATA HOMES2;
+SET TRAIN (KEEP=Neighborhood GrLivArea SalePrice SaleCondition);
+IF Neighborhood EQ "NAmes" | 
+   Neighborhood EQ "BrkSide" | 
+   Neighborhood EQ "Edwards";
 IF SalePrice LT 300000;
 IF SaleCondition EQ "Normal";
-GrLivArea100 = ROUND(GrLivArea, 100); /*FLOOR(GrLivArea);*/
-logGrLivArea100 = log(GrLivArea100);
-logSalePrice = log(SalePrice);
+GrLivArea100 = ROUND(GrLivArea, 100);
 RUN;
 
-/* d1 = NAmes, d2 = BrkSide, Control = Edwards */
-DATA HOMESP1b;
-SET HOMESP1a;
-		if Neighborhood = 'NAmes' then d1 = 1; else d1=0;
-		if Neighborhood = 'BrkSide' then d2 = 1; else d2=0;
+*--------------------------------------------------------*
+| Descriptive statistics on the HOMES1 dataset for       |
+| GrLivArea and SalePrice                                |
+*--------------------------------------------------------*;
+
+PROC UNIVARIATE DATA=HOMES2;
+	CLASS Neighborhood;
+	VAR GrLivArea SalePrice;
+RUN;
+
+*--------------------------------------------------------*
+| Scatter plot of sale prices in the three neighborhoods |
+| vs Gross Living Area                                   |
+*--------------------------------------------------------*;
+
+PROC SGPLOT DATA=HOMES2;
+	SCATTER X=GrLivArea Y=SalePrice;
+	REG X=GrLivArea Y=SalePrice;
+RUN;
+
+*--------------------------------------------------------*
+| Regression model of homes in the three neighborhoods   |
+| using a model that allows slopes and intercepts to     |
+| vary                                                   |
+| Output 95% confidence limit for parameter estimates    |
+*--------------------------------------------------------*;
+
+PROC REG DATA=HOMES2 PLOTS=ALL;
+	MODEL SalePrice=GrLivArea / CLB;
+	RUN;
+
+*--------------------------------------------------------*
+| Regression model of homes in the three neighborhoods   |
+| using an equal slope model                             |
+*--------------------------------------------------------*;
+
+PROC GLM DATA=HOMES2;
+	CLASS Neighborhood;
+	MODEL SalePrice=GrLivArea Neighborhood / CLPARM;
+	RUN;
+
+*--------------------------------------------------------*
+| Regression model of homes in the three neighborhoods   |
+| using an equal intercept model (slopes differ)         |
+*--------------------------------------------------------*;
+
+PROC GLM DATA=HOMES2;
+	CLASS Neighborhood;
+	MODEL SalePrice=GrLivArea*Neighborhood / CLPARM;
+	RUN;
+
+*--------------------------------------------------------*
+| Regression model of homes in the three neighborhoods   |
+| using a model that allows slopes and intercepts to     |
+| vary                                                   |
+*--------------------------------------------------------*;
+
+PROC GLM DATA=HOMES2;
+	CLASS Neighborhood;
+	MODEL SalePrice=Neighborhood GrLivArea*Neighborhood / CLPARM;
+	RUN;
+
+
+*--------------------------------------------------------*
+| Alternate Method with interaction terms                |
+|                                                        |
+| Keep only the variables of Neighboorhood, GrLivArea,   |
+| and SalePrice in the dataset                           |
+| d1 = NAmes, d2 = BrkSide, Control = Edwards            |
+*--------------------------------------------------------*;
+
+DATA HOMES3;
+SET TRAIN (KEEP=Neighborhood GrLivArea SalePrice SaleCondition);
+IF Neighborhood EQ "NAmes" | 
+   Neighborhood EQ "BrkSide" | 
+   Neighborhood EQ "Edwards";
+IF SalePrice LT 300000;
+IF SaleCondition EQ "Normal";
+GrLivArea100 = ROUND(GrLivArea, 100);
+  IF Neighborhood = 'NAmes' THEN d1 = 1; ELSE d1=0;
+  IF Neighborhood = 'BrkSide' THEN d2 = 1; ELSE d2=0;
 		int1 = d1*GrLivArea100; int2 = d2*GrLivArea100;
 RUN;
 
-PROC SGPLOT DATA=HOMESP1b;
-HISTOGRAM logGrLivArea100;
-DENSITY logGrLivArea100/TYPE=NORMAL;
-TITLE "Histogram of Gross Living Area in NAmes, BrkSide, and Edwards"
+*--------------------------------------------------------*
+| Plots to check assumptions                             |
+| d1 = NAmes, d2 = BrkSide, Control = Edwards            |
+*--------------------------------------------------------*;
+
+PROC SGPLOT DATA=HOMES3;
+HISTOGRAM GrLivArea100;
+DENSITY GrLivArea100/TYPE=NORMAL;
+TITLE "Histogram of Gross Living Area in NAmes, BrkSide, and Edwards";
 RUN;
 
-PROC SGPLOT DATA=homesp1b;
+PROC SGPLOT DATA=HOMES3;
 SCATTER X=GrLivArea100 Y=SalePrice;
-TITLE "Gross Living Area vs Sale Price in NAmes, BrkSide, and Edwards"
-RUN;
-
-PROC REG DATA=homesp1a;
-model SalePrice = GrLivArea100;
-model logSalePrice = GrLivArea100;
-model SalePrice = logGrLivArea100;
-model logSalePrice = logGrLivArea100;
-RUN;
-
-PROC SGPLOT DATA=homesp1b;
-SCATTER X=GrLivArea Y=SalePrice;
 TITLE "Gross Living Area vs Sale Price in NAmes, BrkSide, and Edwards";
 RUN;
 
-/* Model to examine if there is a difference between the three neighborhoods */
-PROC REG DATA=HOMESP1b; /*Dummy Variables*/
-	model SalePrice = GrLivArea100 d1 d2 int1 int2/VIF;
-	title 'Regression of Sale Price on Gross Living Area with Interaction Terms';
+PROC REG DATA=HOMES3;
+model SalePrice = GrLivArea100/CLB;
+RUN;
+
+*--------------------------------------------------------*
+| Run regression model with interaction terms using dummy|
+| variables                                              |
+| d1 = NAmes, d2 = BrkSide, Control = Edwards            |
+| Output 95% confidence limit for parameter estimates    |
+*--------------------------------------------------------*;
+PROC REG DATA=HOMES3;
+	model SalePrice = GrLivArea100 d1 d2 int1 int2/VIF CLB;
+	title 
+	'Regression of Sale Price on Gross Living Area 
+	with Interaction Terms';
 	RUN;
 
-PROC MEANS DATA=homesp1b;
+*--------------------------------------------------------*
+| center the interaction terms based on the means of     |
+| GrLivArea100 and d1 and d2 to correct for the          |
+| inflated VIF                                           |
+*--------------------------------------------------------*;
+
+PROC MEANS DATA=HOMES3;
 var GrLivArea100 d1 d2;
 run;
 
-/* With GrLivArea > 4000 included AND SalePrice >300000 INCLUDED*/
 DATA center;
 set Homesp1b;
-cent1 = (GrLivArea100 - 1303.4)*(d1-0.588);
-cent2 = (GrLivArea100 - 1303.4)*(d2-0.151);
+cent1 = (GrLivArea100 - 1280.72)*(d1-0.588);
+cent2 = (GrLivArea100 - 1280.72)*(d2-0.151);
 RUN;
 
-
-/* With GrLivArea > 4000 REMOVED
 DATA center;
-set Homesp1b;
-cent1 = (GrLivArea100 - 1283.2)*(d1-0.591);
-cent2 = (GrLivArea100 - 1283.2)*(d2-0.152);
-RUN;
- */
-
-/* With GrLivArea > 4000 AND SalePrice > 300000 REMOVED
-DATA center;
-set Homesp1b;
-cent1 = (GrLivArea100 - 1278.36)*(d1-0.591);
-cent2 = (GrLivArea100 - 1278.36)*(d2-0.360);
-RUN;
- */
-
-PROC REG DATA=center;
-model SalePrice = GrLivArea100 d1 d2 cent1 cent2/VIF;
+set HOMES3;
+cent1 = (GrLivArea100 - 1283.2)*(d1-0.593);
+cent2 = (GrLivArea100 - 1283.2)*(d2-0.164);
 RUN;
 
-PROC GLM DATA=homesp1a PLOT=ALL;
+PROC REG DATA=center PLOTS=ALL;
+model SalePrice = GrLivArea100 d1 d2 cent1 cent2/VIF CLB;
+title 
+	'Regression of Sale Price on Gross Living Area 
+	with Interaction Terms';
+RUN;
+
+PROC GLM DATA=HOMES3 PLOT=ALL;
 CLASS Neighborhood;
-model SalePrice=GrLivArea100|Neighborhood/solution;
+model SalePrice=GrLivArea100|Neighborhood/solution CLPARM;
 RUN;
