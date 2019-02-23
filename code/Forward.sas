@@ -26,6 +26,10 @@ RUN;
 
 DATA HOMES;
 	SET TRAIN TEST;
+	IF LotFrontage EQ "NA" THEN LotFrontage = 0;
+	LotFront = input(LotFrontage, 8.);
+	drop LotFrontage;
+	RENAME LotFront=LotFrontage;
 RUN;
 
 *--------------------------------------------------------*
@@ -52,9 +56,10 @@ PROC GLMSELECT DATA=HOMES SEED=71669132;
 		  BsmtFinType2 Heating HeatingQC CentralAir Electrical 
 		  KitchenQual Functional FireplaceQu GarageType 
 		  GarageFinish GarageQual GarageCond PavedDrive PoolQC 
-		  Fence MiscFeature SaleType SaleCondition LotFrontage 
+		  Fence MiscFeature SaleType SaleCondition RoofStyle
+		  BsmtCond MasVnrType
 		  / split;
-	MODEL SalePrice=LotArea YearBuilt YearRemodAdd BsmtFinSF1 
+	MODEL SalePrice= LotArea YearBuilt YearRemodAdd BsmtFinSF1 
 		  BsmtFinSF2 BsmtUnfSF TotalBsmtSF _1stFlrSF _2ndFlrSF 
 		  LowQualFinSF GrLivArea BsmtFullBath BsmtHalfBath 
 		  FullBath HalfBath BedroomAbvGr KitchenAbvGr 
@@ -70,6 +75,7 @@ PROC GLMSELECT DATA=HOMES SEED=71669132;
 		  KitchenQual Functional FireplaceQu GarageType 
 		  GarageFinish GarageQual GarageCond PavedDrive PoolQC 
 		  Fence MiscFeature SaleType SaleCondition LotFrontage
+		  RoofStyle BsmtCond MasVnrType
 	/ selection =forward(stop=CV) cvmethod=random(5) stats=all;
 	OUTPUT OUT=RESULTS P=PREDICT;
 RUN;
