@@ -43,8 +43,7 @@ RUN;
 *--------------------------------------------------------*;
 
 PROC SGPLOT DATA=HOMES1;
-	SCATTER X=GrLivArea Y=SalePrice;
-	REG X=GrLivArea Y=SalePrice;
+	SCATTER X=GrLivArea Y=SalePrice/GROUP=Neighborhood;
 RUN;
 
 *--------------------------------------------------------*
@@ -54,7 +53,7 @@ RUN;
 | neighborhoods                                          |
 *--------------------------------------------------------*;
 
-PROC REG DATA=HOMES1;
+PROC REG DATA=HOMES1 PLOTS=ALL;
 	MODEL SalePrice=GrLivArea / CLB;
 	RUN;
 
@@ -128,6 +127,10 @@ RUN;
 PROC SGPLOT DATA=HOMES2;
 	SCATTER X=GrLivArea Y=SalePrice;
 	REG X=GrLivArea Y=SalePrice;
+RUN;
+
+PROC SGPLOT DATA=HOMES2;
+	SCATTER X=GrLivArea Y=SalePrice/GROUP=Neighborhood;
 RUN;
 
 *--------------------------------------------------------*
@@ -210,7 +213,7 @@ SCATTER X=GrLivArea100 Y=SalePrice;
 TITLE "Gross Living Area vs Sale Price in NAmes, BrkSide, and Edwards";
 RUN;
 
-PROC REG DATA=HOMES3;
+PROC REG DATA=HOMES3 PLOT=ALL;
 model SalePrice = GrLivArea100/CLB;
 RUN;
 
@@ -238,15 +241,9 @@ var GrLivArea100 d1 d2;
 run;
 
 DATA center;
-set Homesp1b;
-cent1 = (GrLivArea100 - 1280.72)*(d1-0.588);
-cent2 = (GrLivArea100 - 1280.72)*(d2-0.151);
-RUN;
-
-DATA center;
 set HOMES3;
-cent1 = (GrLivArea100 - 1283.2)*(d1-0.593);
-cent2 = (GrLivArea100 - 1283.2)*(d2-0.164);
+cent1 = (GrLivArea100 - 1280.72)*(d1-0.593);
+cent2 = (GrLivArea100 - 1280.72)*(d2-0.164);
 RUN;
 
 PROC REG DATA=center PLOTS=ALL;
@@ -259,4 +256,10 @@ RUN;
 PROC GLM DATA=HOMES3 PLOT=ALL;
 CLASS Neighborhood;
 model SalePrice=GrLivArea100|Neighborhood/solution CLPARM;
+RUN;
+
+PROC GLMSELECT DATA=HOMES3;
+CLASS Neighborhood;
+MODEL SalePrice = GrLivArea Neighborhood 
+/ cvmethod=random(5) stats=all;
 RUN;
