@@ -111,3 +111,33 @@ FILENAME REFFILE3
 
 PROC EXPORT DATA=RESULTS_BW FILE=REFFILE3 DBMS=CSV REPLACE;
 RUN;
+
+*--------------------------------------------------------*
+| Check model assumptions.                |
+*--------------------------------------------------------*;
+
+
+DATA HOMES2;
+SET HOMES (KEEP=BsmtFinSF1 _1stFlrSF _2ndFlrSF OverallQual RoofMatl
+                SalePrice);
+	IF RoofMatl EQ "ClyTile" THEN RoofMatl_ClyTile=1; 
+	ELSE RoofMatl_ClyTile=0;
+	IF OverallQual EQ 7 THEN OQ7=1; ELSE OQ7=0;
+	IF OverallQual EQ 6 THEN OQ6=1; ELSE OQ6=0;
+	IF OverallQual EQ 5 THEN OQ5=1; ELSE OQ5=0;
+	IF OverallQual EQ 4 THEN OQ4=1; ELSE OQ4=0;
+	IF OverallQual EQ 3 THEN OQ3=1; ELSE OQ3=0;
+RUN;
+
+PROC REG DATA=HOMES2 PLOT=ALL;
+	model SalePrice = BsmtFinSF1 _1stFlrSF _2ndFlrSF 
+	OQ7 OQ6 OQ5 OQ4 OQ3 RoofMatl_ClyTile/CLB;
+	title 
+	'Regression of Sale Price Using Backward Selection Results';
+	RUN;
+
+PROC GLM DATA=HOMES2 PLOT=ALL;
+CLASS OverallQual RoofMatl;
+MODEL SalePrice = BsmtFinSF1 _1stFlrSF _2ndFlrSF OverallQual|
+	RoofMatl_ClyTile/solution CLPARM;
+RUN;

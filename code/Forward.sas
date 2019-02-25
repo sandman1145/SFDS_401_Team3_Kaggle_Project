@@ -110,3 +110,29 @@ FILENAME REFFILE3
 
 PROC EXPORT DATA=RESULTS_FW FILE=REFFILE3 DBMS=CSV REPLACE;
 RUN;
+
+*--------------------------------------------------------*
+| Check model assumptions.                |
+*--------------------------------------------------------*;
+
+DATA HOMES2;
+SET HOMES (KEEP=YearBuilt TotalBsmtSF GrLivArea RoofMatl BsmtQual
+                SalePrice);
+	IF RoofMatl EQ "ClyTile" THEN RoofMatl_ClyTile=1; 
+	ELSE RoofMatl_ClyTile=0;
+	IF BsmtQual = 'Ex' THEN BsmtQual_EX = 1; 
+	ELSE BsmtQual_EX=0;
+RUN;
+
+PROC REG DATA=HOMES2 PLOT=ALL;
+	model SalePrice = YearBuilt TotalBsmtSF GrLivArea
+	RoofMatl_ClyTile BsmtQual_EX/CLB;
+	title 
+	'Regression of Sale Price Using Forward Selection Results';
+	RUN;
+
+PROC GLM DATA=HOMES2 PLOT=ALL;
+CLASS RoofMatl_ BsmtQual;
+MODEL SalePrice = YearBuilt TotalBsmtSF GrLivArea|
+	RoofMatl_ClyTile BsmtQual_EX/solution CLPARM;
+RUN;

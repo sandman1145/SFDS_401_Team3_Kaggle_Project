@@ -79,113 +79,27 @@ The dataset used for this analysis was retrieved from \href{https://www.kaggle.c
 \paragraph{Request} Century 21 Ames only sells houses in the Noth Ames, Edwards and Brookside neighborhoods and wants an estimate of how the sale price of the house is related to the square footage of the living area of the house. Additionally, Century 21 Ames would like to know if the sale price (and its relationship to square footage) depends on which neighborhood the house is located in. A fit a model will be used to answer this question.
 \paragraph{Deliverable} Provide the estimate (or estimates if it varies by neighborhood) as well as confidence intervals for any estimate(s) you provide. Provide evidence that the model assumptions are met and that any suspicious observations (outliers / influential observations) have been identified and addressed. Finally, a conclusion that quantifies the relationship between living area and sale price with respect to these three neighborhoods.
 \subsection{Build and Fit the Model}
-\paragraph{} Appendix~\ref{sec:Analysis1}{. Source Code For Analysis 1} contains the SAS code used to check the assumptions, clean the data, and run the model to determine the best estimate for sale price based on square footage for the North Ames, Edwards, and Brookside neighborhoods. We removed four data points from the original dataset due to being outliers. First sale prices greater than \$300,000 were determined to not be representative of the total population of these three neighborhoods. Second, sale condition was limited to only those that were normal sales. Again we feel that home sales that were not normal sales such as foreclosures, linked properties, and land purchases were not representative of the population of interest.
-\begin{figure}[h] % [h] forces the figure to be output where it is defined in the code (it suppresses floating)
-	\centering
-	\begin{tabular}{p{0.48\textwidth} p{0.48\textwidth}}
-	\hline
-	\multicolumn{1}{|c|}{Original} & \multicolumn{1}{|c|}{After Removal of Outliers} \\
-		\multicolumn{1}{|c|}{\includegraphics[width=0.48\textwidth]{../graphics/A1LR1}} &
-		\multicolumn{1}{|c|}{\includegraphics[width=0.48\textwidth]{../graphics/A1LR2}}\\
-		\hline
-	\end{tabular}		
-	\caption{Simple Linear Regression Models.}
-	\label{fig:A1LR}
-\end{figure}
+\paragraph{} Listing~\ref{lst:Analysis1Source} of Appendix~\ref{sec:Analysis1} contains the SAS code used to check the assumptions, clean the data, and run the model to determine the best estimate for sale price based on square footage for the North Ames, Edwards, and Brookside neighborhoods. We removed four data points from the original dataset due to being outliers. First sale prices greater than \$300,000 were determined to not be representative of the total population of these three neighborhoods. Second, sale condition was limited to only those that were normal sales. Again we feel that home sales that were not normal sales such as foreclosures, linked properties, and land purchases were not representative of the population of interest.
+
 %------------------------------------------------
 
 \subsection{Checking Assumptions}
-\begin{figure}[h] % [h] forces the figure to be output where it is defined in the code (it suppresses floating)
-	\centering
-	\begin{tabular}{p{0.23\textwidth} p{0.23\textwidth}p{0.23\textwidth}p{0.23\textwidth}}
-\hline	
-	\multicolumn{2}{|c|}{Original} &  \multicolumn{2}{|c|}{After Removal of Outliers} \\
-		\multicolumn{1}{|c}{\includegraphics[width=0.23\textwidth]{../graphics/A1Norm1}} &
-		\multicolumn{1}{c|}{\includegraphics[width=0.23\textwidth]{../graphics/A1qq1}} &
-		\multicolumn{1}{|c}{\includegraphics[width=0.23\textwidth]{../graphics/A1Norm2}} &
-		\multicolumn{1}{c|}{\includegraphics[width=0.23\textwidth]{../graphics/A1qq2}}\\
-		\hline
-	\end{tabular}		
-	\caption{Normality Plots.}
-	\label{fig:A1QQ}
-\end{figure}
-
-\begin{figure}[h] % [h] forces the figure to be output where it is defined in the code (it suppresses floating)
-	\centering
-	\begin{tabular}{p{0.23\textwidth} p{0.23\textwidth}p{0.23\textwidth}p{0.23\textwidth}}
-	\hline
-	\multicolumn{2}{|c|}{Original} &  \multicolumn{2}{|c|}{After Removal of Outliers} \\
-		\multicolumn{1}{|c}{\includegraphics[width=0.23\textwidth]{../graphics/A1Residuals1}} &
-		\multicolumn{1}{c|}{\includegraphics[width=0.23\textwidth]{../graphics/A1StudentResiduals1}} &
-		\multicolumn{1}{|c}{\includegraphics[width=0.23\textwidth]{../graphics/A1Residuals2}} &
-		\multicolumn{1}{c|}{\includegraphics[width=0.23\textwidth]{../graphics/A1StudentResiduals2}}\\
-		\hline
-	\end{tabular}		
-	\caption{Residual Plots.}
-	\label{fig:A1RP}
-\end{figure}
-
-
 \subsubsection{Assumptions}
 \paragraph{Linearity} The linearity assumption is met by the reviewing the scatter plots associated with data. Fig ~\ref{fig:A1LR} shows a plot of SalePrice vs. GrLivArea and by removing the outliers the linearity assumption is reasonably met. 
 \paragraph{Constant Variance} The residual plot, Fig ~\ref{fig:A1RP} resembles somewhat of a random scatter of points around the 0 line, although there is a slight suspicion of non-constant variance judging from the dense cloud around the predicted value of \$130,000. Also shown is the Studentized Residual Plot which is very similar to the residual plot, although this plot identifies potential outlying observations.
-\paragraph{Normality} Based upon the histograms and q-q plots in Fig ~\ref{fig:A1QQ} there is no evidence to suggest that normality of the data. Additionally the random scatter associated with the residual plots in Fig ~\ref{fig:A1RP} also support the normality assumption.
+\paragraph{Normality} Based upon the histograms and q-q plots in Fig ~\ref{fig:A1QQ} there is no evidence to suggest against the normality of the data. Additionally the random scatter associated with the residual plots in Fig ~\ref{fig:A1RP} also support the normality assumption.
 \paragraph{Independence} The independence assumption can be assumed to be maintained since these are all unique sales in a free housing market. 
 \subsubsection{Outliers and Influential Points}
-\begin{figure}[h] % [h] forces the figure to be output where it is defined in the code (it suppresses floating)
-	\centering
-	\begin{tabular}{p{0.23\textwidth} p{0.23\textwidth}p{0.23\textwidth}p{0.23\textwidth}}
-\hline	
-	\multicolumn{2}{|c|}{Original} &  \multicolumn{2}{|c|}{After Removal of Outliers} \\
-		\multicolumn{1}{|c}{\includegraphics[width=0.23\textwidth]{../graphics/A1Cooks1}} &
-		\multicolumn{1}{c|}{\includegraphics[width=0.23\textwidth]{../graphics/A1Lev1}} &
-		\multicolumn{1}{|c}{\includegraphics[width=0.23\textwidth]{../graphics/A1Cooks2}} &
-		\multicolumn{1}{c|}{\includegraphics[width=0.23\textwidth]{../graphics/A1Lev2}}\\
-		\hline
-	\end{tabular}		
-	\caption{Influential Point Plots.}
-	\label{fig:A1IP}
-\end{figure}
 \paragraph{outliers / influential observations} There are distinct outliers that can be seen both in the Cook's D and Outlier and Leverage Diagnostics seen in Fig ~\ref{fig:A1IP}. By removing the observations that resulted from non-normal sales conditions such as foreclosures and sale prices that were significantly outside the population, the Cook's D and Outlier and Leverage Diagnostics significantly improved. We are confident that the removal of these observations was appropriate since they do not represent the population as a whole. Additionally we are confident that the remaining data does not contain significant outliers or leverage points that need to be addressed further.
 \paragraph{}The model is a reasonable fit without transformations.  The removal of observations not reflective of the population, such as non-normal sale conditions and home sales greater than \$300,000, seems appropriate and enables the required model assumptions to be met.
 
 \subsubsection{Effect by Neighborhood}
-\begin{figure}[h] % [h] forces the figure to be output where it is defined in the code (it suppresses floating)
-	\centering
-	\begin{tabular}{p{0.48\textwidth} p{0.48\textwidth}}
-\hline	
-	\multicolumn{1}{|c|}{Original} &  \multicolumn{1}{|c|}{After Removal of Outliers} \\
-		\multicolumn{1}{|c|}{\includegraphics[width=0.48\textwidth]{../graphics/A1NHscat1}} &
-		\multicolumn{1}{|c|}{\includegraphics[width=0.48\textwidth]{../graphics/A1NHscat2}}\\
-		\hline
-	\end{tabular}		
-	\caption{Scatterplot of Sale Prices vs Living Area by Neighborhood.}
-	\label{fig:NBscat}
-\end{figure}
 \paragraph{Model} A model was developed to individually look at the neighborhoods of interest to determine if the sale price is impacted by neighborhood. Fig ~\ref{fig:NBscat} shows the sales price vs living area by neighborhood. The model shows (Table~\ref{tab:SMM}) that the intercept and slope for Brookside and Edwards do differ from North Ames with statistical significance (p-values: $<.0001$ and $.0077$). As such we have determined to choose this model which allows for different intercept and slopes based upon the neighborhood. The resultant model can be seen in Fig ~\ref{fig:NBLRM}.
-\begin{table}[h] % [h] forces the table to be output where it is defined in the code (it suppresses floating)
-	\centering % Centre the table
-	\includegraphics[scale=.3]{../graphics/A1NHcomp}
-	\caption{Results of Neighborhood Impact on Sales Price}
-	\label{tab:SMM}
-\end{table}
 
-\begin{figure}[h] % [h] forces the figure to be output where it is defined in the code (it suppresses floating)
-	\centering
-	\includegraphics[scale=.2]{../graphics/A1NBMLR}
-	\caption{Linear Regression Model by Neighborhood.}
-	\label{fig:NBLRM}
-\end{figure}
 %------------------------------------------------
 
 \subsection{Model Metrics}
 Model metrics can be seen in Table ~\ref{tab:A1Results}.
-\begin{table}[h] % [h] forces the table to be output where it is defined in the code (it suppresses floating)
-	\centering % Centre the table
-	\includegraphics[scale=.4]{../graphics/A1NBMLRResults}
-	\caption{Results of Neighborhood Impact on Sales Price}
-	\label{tab:A1Results}
-\end{table}
 \subsubsection{Adj R\textsuperscript{2}} 
 \paragraph{Adjusted $R^2$} obtained for this model is 0.53.
 \subsubsection{Internal Press} 
@@ -236,16 +150,58 @@ The confidence intervals for the estimates can be seen in Table ~\ref{tab:SMM}.
 %------------------------------------------------
 
 \subsection{Model Selection}
-\subsubsection{Stepwise}
 \subsubsection{Forward}
-\subsubsection{Backward}
-\subsubsection{Custom}
-%------------------------------------------------
+\begin{eqnarray*}
+SalePrice &=& -1271664 + 648.153(YearBuilt) + 47.049(TotalBsmtSF) \\
+& & + 80.004(GrLivArea) - 671551(RoofMatl\_ClyTile)\\
+& & + 62871(BsmtQual\_Ex)
+\end{eqnarray*}
+The SAS code for the forward model can be found in Listing~\ref{lst:Forward} of Appendix ~\ref{sec:Analysis2}.
+The fit diagnostics and residuals by regressors for sale price can be seen in Fig ~\ref{fig:A2FWAss}. A scatterplot of the predicted values vs the sale price using the features obtained by the forward selection model can be seen in Fig ~\ref{fig:A2FWscatt}.
+\paragraph{Linearity} The linearity assumption is met by the reviewing the scatter plots associated with data. There is no evidence to suggest that these data are not linear based on the scatterplot in Fig ~\ref{fig:A2FWscatt}.
+\paragraph{Constant Variance} The residual plots in Fig ~\ref{fig:A2FWAss} resembles somewhat of a random scatter of points around the 0 line. Also shown is the Studentized Residual Plot which is very similar to the residual plot, although this plot identifies potential outlying observations.
+\paragraph{Normality} Based upon the histograms and q-q plots in Fig ~\ref{fig:A2FWQQ} there is evidence to suggest normality of the data. Additionally the random scatter associated with the residual plots in Fig ~\ref{fig:A2FWAss} also support the normality assumption. The q-q plot does show a trailing off at the begining and end of the data which can suggest that very high or very low home prices may not meet the normality assumption.
+\paragraph{Independence} The independence assumption can be assumed to be maintained since these are all unique sales in a free housing market. 
+\paragraph{Outliers and Influential Points}
+\paragraph{outliers / influential observations} There are distinct outliers that can be seen both in the Cook's D and Outlier and Leverage Diagnostics seen in Fig ~\ref{fig:A2FWIP}. Whilte these outliers exist, they do not seem to have too high of leverage in the overall model.
 
-\subsection{Checking Assumptions}
-\subsubsection{Residual Plots}
-\subsubsection{Influential point analysis (Cook’s D and Leverage)}
-\subsubsection{Make sure to address each assumption}
+\subsubsection{Backward}
+\begin{eqnarray*}
+SalePrice &=& 120177 + 35.192(BsmtFinSF1) + 85.189(1stFlrSF) \\
+& & + 59.655(2ndFlrSF) - 120853(OverallQual\_3)\\
+& & - 110889(OverallQual\_4) - 101945(OverallQual\_5)\\
+& & - 86980(OverallQual\_6) - 57950(OverallQual\_7) \\
+& & - 615180(RoofMatl\_ClyTile)
+\end{eqnarray*}
+The SAS code for the forward model can be found in Listing~\ref{lst:Backward} of Appendix ~\ref{sec:Analysis2}.
+The fit diagnostics and residuals by regressors for sale price can be seen in Fig ~\ref{fig:A2BWAss}. A scatterplot of the predicted values vs the sale price using the features obtained by the forward selection model can be seen in Fig ~\ref{fig:A2BWscatt}.
+\paragraph{Linearity} The linearity assumption is met by the reviewing the scatter plots associated with data. There is no evidence to suggest that these data are not linear based on the scatterplot in Fig ~\ref{fig:A2BWscatt}.
+\paragraph{Constant Variance} The residual plots in Fig ~\ref{fig:A2BWAss} resembles somewhat of a random scatter of points around the 0 line. Also shown is the Studentized Residual Plot which is very similar to the residual plot, although this plot identifies potential outlying observations.
+\paragraph{Normality} Based upon the histograms and q-q plots in Fig ~\ref{fig:A2BWQQ} there is evidence to suggest normality of the data. Additionally the random scatter associated with the residual plots in Fig ~\ref{fig:A2BWAss} also support the normality assumption. The q-q plot does show a trailing off at the begining and end of the data which can suggest that very high or very low home prices may not meet the normality assumption.
+\paragraph{Independence} The independence assumption can be assumed to be maintained since these are all unique sales in a free housing market. 
+\paragraph{Outliers and Influential Points}
+\paragraph{outliers / influential observations} There are distinct outliers that can be seen both in the Cook's D and Outlier and Leverage Diagnostics seen in Fig ~\ref{fig:A2BWIP}. Whilte these outliers exist, they do not seem to have too high of leverage in the overall model.
+
+\subsubsection{Stepwise}
+\begin{eqnarray*}
+SalePrice &=& -1271664 + 648.153(YearBuilt) + 47.049(TotalBsmtSF) \\
+& & + 80.004(GrLivArea) - 671551(RoofMatl\_ClyTile)\\
+& & + 62871(BsmtQual\_Ex)
+\end{eqnarray*}
+The SAS code for the forward model can be found in Listing~\ref{lst:Stepwise} of Appendix ~\ref{sec:Analysis2}
+The fit diagnostics and residuals by regressors for sale price can be seen in Fig ~\ref{fig:A2SWAss}. A scatterplot of the predicted values vs the sale price using the features obtained by the forward selection model can be seen in Fig ~\ref{fig:A2SWscatt}.
+\paragraph{Linearity} The linearity assumption is met by the reviewing the scatter plots associated with data. There is no evidence to suggest that these data are not linear based on the scatterplot in Fig ~\ref{fig:A2SWscatt}.
+\paragraph{Constant Variance} The residual plots in Fig ~\ref{fig:A2SWAss} resembles somewhat of a random scatter of points around the 0 line. Also shown is the Studentized Residual Plot which is very similar to the residual plot, although this plot identifies potential outlying observations.
+\paragraph{Normality} Based upon the histograms and q-q plots in Fig ~\ref{fig:A2SWQQ} there is evidence to suggest normality of the data. Additionally the random scatter associated with the residual plots in Fig ~\ref{fig:A2SWAss} also support the normality assumption. The q-q plot does show a trailing off at the begining and end of the data which can suggest that very high or very low home prices may not meet the normality assumption.
+\paragraph{Independence} The independence assumption can be assumed to be maintained since these are all unique sales in a free housing market. 
+\paragraph{Outliers and Influential Points}
+\paragraph{outliers / influential observations} There are distinct outliers that can be seen both in the Cook's D and Outlier and Leverage Diagnostics seen in Fig ~\ref{fig:A2SWIP}. Whilte these outliers exist, they do not seem to have too high of leverage in the overall model.
+
+\subsubsection{Custom}
+\begin{eqnarray*}
+SalePrice &=& 
+\end{eqnarray*}
+The SAS code for the custom model can be found in Listing~\ref{lst:Custom} of Appendix ~\ref{sec:Analysis2}
 %------------------------------------------------
 
 \subsection{Comparing Competing Models}
@@ -255,20 +211,18 @@ The confidence intervals for the estimates can be seen in Table ~\ref{tab:SMM}.
 \hline
 \textbf{Predictive Models} & \textbf{Adjusted R\textsuperscript{2}} & \textbf{CV Press} & \textbf{Kaggle Score}\\
 \hline
-Forward & XX & XX & XX\\
+Forward & 0.7789 & 2.37E12 & 0.20306\\
 \hline
-Backward & XX & XX & XX\\
+Backward & 0.7846 & 1.87E12 & 0.23930\\
 \hline
-Stepwise & XX & XX & XX\\
+Stepwise & 0.7789 & 2.37E12 & 0.20306\\
 \hline
 CUSTOM & XX & XX & XX\\
 \hline
 \end{tabular}
 \caption{Analysis Results}
 \end{table}
-\subsubsection{Adj R\textsuperscript{2}}
-\subsubsection{Internal CV Press}
-\subsubsection{Kaggle Score}
+
 %------------------------------------------------
 
 \subsection{Conclusion}
@@ -281,8 +235,328 @@ CUSTOM & XX & XX & XX\\
 %% with A
 %% ------------------------------------------
 \appendix{} 
-
 \pagebreak
+\section{List of Tables}
+\label{sec:Tables}
+\hrulefill
+\begin{table}[H] % [h] forces the table to be output where it is defined in the code (it suppresses floating)
+	\centering % Centre the table
+	\includegraphics[scale=.3]{../graphics/A1NHcomp}
+	\caption{Results of Neighborhood Impact on Sales Price.}
+	\label{tab:SMM}
+\end{table}
+\hrulefill
+\begin{table}[H] % [h] forces the table to be output where it is defined in the code (it suppresses floating)
+	\centering % Centre the table
+	\includegraphics[scale=.4]{../graphics/A1NBMLRResults}
+	\caption{Results of Neighborhood Impact on Sales Price.}
+	\label{tab:A1Results}
+\end{table}
+\hrulefill
+\begin{table}[H] % [h] forces the table to be output where it is defined in the code (it suppresses floating)
+	\centering % Centre the table
+	\includegraphics[scale=.25]{../graphics/A2FWfeatures}
+	\caption{Forward Selection Model Summary.}
+	\label{tab:A2FWsummary}
+\end{table}
+\hrulefill
+\begin{table}[H] % [h] forces the table to be output where it is defined in the code (it suppresses floating)
+	\centering % Centre the table
+	\includegraphics[scale=.3]{../graphics/A2FWresults}
+	\caption{Forward Selection Model Performance.}
+	\label{tab:A2FWperf}
+\end{table}
+\hrulefill
+\begin{table}[H] % [h] forces the table to be output where it is defined in the code (it suppresses floating)
+	\centering % Centre the table
+	\includegraphics[scale=.4]{../graphics/A2FWKaggle}
+	\caption{Forward Selection Model Performance - Kaggle.}
+	\label{tab:A2FWKaggle}
+\end{table}
+\hrulefill
+\begin{table}[H] % [h] forces the table to be output where it is defined in the code (it suppresses floating)
+	\centering % Centre the table
+	\includegraphics[scale=.3]{../graphics/A2FWCI}
+	\caption{Forward Selection Model 95\% Confidence Limits.}
+	\label{tab:A2FWCI}
+\end{table}
+\hrulefill
+\begin{table}[H] % [h] forces the table to be output where it is defined in the code (it suppresses floating)
+	\centering % Centre the table
+	\includegraphics[scale=.3]{../graphics/A2BWresults}
+	\caption{Backward Selection Model Performance.}
+	\label{tab:A2BWperf}
+\end{table}
+\hrulefill
+\begin{table}[H] % [h] forces the table to be output where it is defined in the code (it suppresses floating)
+	\centering % Centre the table
+	\includegraphics[scale=.4]{../graphics/A2BWKaggle}
+	\caption{Backward Selection Model Performance - Kaggle.}
+	\label{tab:A2BWKaggle}
+\end{table}
+\hrulefill
+\begin{table}[H] % [h] forces the table to be output where it is defined in the code (it suppresses floating)
+	\centering % Centre the table
+	\includegraphics[scale=.3]{../graphics/A2BWCI}
+	\caption{Backward Selection Model 95\% Confidence Limits.}
+	\label{tab:A2BWCI}
+\end{table}
+\hrulefill
+\begin{table}[H] % [h] forces the table to be output where it is defined in the code (it suppresses floating)
+	\centering % Centre the table
+	\includegraphics[scale=.25]{../graphics/A2SWfeatures}
+	\caption{Stepwise Selection Model Summary.}
+	\label{tab:A2SWsummary}
+\end{table}
+\hrulefill
+\begin{table}[H] % [h] forces the table to be output where it is defined in the code (it suppresses floating)
+	\centering % Centre the table
+	\includegraphics[scale=.3]{../graphics/A2SWresults}
+	\caption{Stepwise Selection Model Performance.}
+	\label{tab:A2SWperf}
+\end{table}
+\hrulefill
+\begin{table}[H] % [h] forces the table to be output where it is defined in the code (it suppresses floating)
+	\centering % Centre the table
+	\includegraphics[scale=.4]{../graphics/A2SWKaggle}
+	\caption{Stepwise Selection Model Performance - Kaggle.}
+	\label{tab:A2SWKaggle}
+\end{table}
+\hrulefill
+\begin{table}[H] % [h] forces the table to be output where it is defined in the code (it suppresses floating)
+	\centering % Centre the table
+	\includegraphics[scale=.3]{../graphics/A2SWCI}
+	\caption{Stepwise Selection Model 95\% Confidence Limits.}
+	\label{tab:A2SWCI}
+\end{table}
+\hrulefill
+\pagebreak
+
+\section{List of Figures}
+\label{sec:Figures}
+\begin{figure}[H] % [h] forces the figure to be output where it is defined in the code (it suppresses floating)
+	\centering
+	\begin{tabular}{p{0.48\textwidth} p{0.48\textwidth}}
+	\hline
+	\multicolumn{1}{|c|}{Original} & \multicolumn{1}{|c|}{After Removal of Outliers} \\
+		\multicolumn{1}{|c|}{\includegraphics[width=0.48\textwidth]{../graphics/A1LR1}} &
+		\multicolumn{1}{|c|}{\includegraphics[width=0.48\textwidth]{../graphics/A1LR2}}\\
+		\hline
+	\end{tabular}		
+	\caption{Simple Linear Regression Models.}
+	\label{fig:A1LR}
+\end{figure}
+\begin{figure}[H] % [h] forces the figure to be output where it is defined in the code (it suppresses floating)
+	\centering
+	\begin{tabular}{p{0.23\textwidth} p{0.23\textwidth}p{0.23\textwidth}p{0.23\textwidth}}
+\hline	
+	\multicolumn{2}{|c|}{Original} &  \multicolumn{2}{|c|}{After Removal of Outliers} \\
+		\multicolumn{1}{|c}{\includegraphics[width=0.23\textwidth]{../graphics/A1Norm1}} &
+		\multicolumn{1}{c|}{\includegraphics[width=0.23\textwidth]{../graphics/A1qq1}} &
+		\multicolumn{1}{|c}{\includegraphics[width=0.23\textwidth]{../graphics/A1Norm2}} &
+		\multicolumn{1}{c|}{\includegraphics[width=0.23\textwidth]{../graphics/A1qq2}}\\
+		\hline
+	\end{tabular}		
+	\caption{Normality Plots.}
+	\label{fig:A1QQ}
+\end{figure}
+\begin{figure}[H] % [h] forces the figure to be output where it is defined in the code (it suppresses floating)
+	\centering
+	\begin{tabular}{p{0.23\textwidth} p{0.23\textwidth}p{0.23\textwidth}p{0.23\textwidth}}
+	\hline
+	\multicolumn{2}{|c|}{Original} &  \multicolumn{2}{|c|}{After Removal of Outliers} \\
+		\multicolumn{1}{|c}{\includegraphics[width=0.23\textwidth]{../graphics/A1Residuals1}} &
+		\multicolumn{1}{c|}{\includegraphics[width=0.23\textwidth]{../graphics/A1StudentResiduals1}} &
+		\multicolumn{1}{|c}{\includegraphics[width=0.23\textwidth]{../graphics/A1Residuals2}} &
+		\multicolumn{1}{c|}{\includegraphics[width=0.23\textwidth]{../graphics/A1StudentResiduals2}}\\
+		\hline
+	\end{tabular}		
+	\caption{Residual Plots.}
+	\label{fig:A1RP}
+\end{figure}
+\begin{figure}[H] % [h] forces the figure to be output where it is defined in the code (it suppresses floating)
+	\centering
+	\begin{tabular}{p{0.23\textwidth} p{0.23\textwidth}p{0.23\textwidth}p{0.23\textwidth}}
+\hline	
+	\multicolumn{2}{|c|}{Original} &  \multicolumn{2}{|c|}{After Removal of Outliers} \\
+		\multicolumn{1}{|c}{\includegraphics[width=0.23\textwidth]{../graphics/A1Cooks1}} &
+		\multicolumn{1}{c|}{\includegraphics[width=0.23\textwidth]{../graphics/A1Lev1}} &
+		\multicolumn{1}{|c}{\includegraphics[width=0.23\textwidth]{../graphics/A1Cooks2}} &
+		\multicolumn{1}{c|}{\includegraphics[width=0.23\textwidth]{../graphics/A1Lev2}}\\
+		\hline
+	\end{tabular}		
+	\caption{Influential Point Plots.}
+	\label{fig:A1IP}
+\end{figure}
+\begin{figure}[H] % [h] forces the figure to be output where it is defined in the code (it suppresses floating)
+	\centering
+	\begin{tabular}{p{0.48\textwidth} p{0.48\textwidth}}
+\hline	
+	\multicolumn{1}{|c|}{Original} &  \multicolumn{1}{|c|}{After Removal of Outliers} \\
+		\multicolumn{1}{|c|}{\includegraphics[width=0.48\textwidth]{../graphics/A1NHscat1}} &
+		\multicolumn{1}{|c|}{\includegraphics[width=0.48\textwidth]{../graphics/A1NHscat2}}\\
+		\hline
+	\end{tabular}		
+	\caption{Scatterplot of Sale Prices vs Living Area by Neighborhood.}
+	\label{fig:NBscat}
+\end{figure}
+\begin{figure}[H] % [h] forces the figure to be output where it is defined in the code (it suppresses floating)
+	\centering
+	\begin{tabular}{| p{0.95\textwidth}|}
+	\hline
+	\\
+	\includegraphics[width=0.95\textwidth]{../graphics/A1NBMLR}\\
+	\hline
+	\end{tabular}	
+	\caption{Linear Regression Model by Neighborhood.}
+	\label{fig:NBLRM}
+\end{figure}
+\begin{figure}[H] % [h] forces the figure to be output where it is defined in the code (it suppresses floating)
+	\centering
+	\begin{tabular}{| p{0.60\textwidth}|}
+	\hline
+	\\
+	\includegraphics[width=0.60\textwidth]{../graphics/A2FWscatt}\\
+	\hline
+	\end{tabular}	
+	\caption{Scatter Plot Forward Selection Model.}
+	\label{fig:A2FWscatt}
+\end{figure}
+\begin{figure}[H] % [h] forces the figure to be output where it is defined in the code (it suppresses floating)
+	\centering
+	\begin{tabular}{p{0.48\textwidth} p{0.48\textwidth}}
+	\hline
+	\multicolumn{1}{|c}{} &  \multicolumn{1}{c|}{} \\
+		\multicolumn{1}{|c}{\includegraphics[width=0.48\textwidth]{../graphics/A2FWAss1}} &
+		\multicolumn{1}{c|}{\includegraphics[width=0.48\textwidth]{../graphics/A2FWAss2}}\\
+		\hline
+	\end{tabular}		
+	\caption{Plots for Forward Selection Model.}
+	\label{fig:A2FWAss}
+\end{figure}
+\begin{figure}[H] % [h] forces the figure to be output where it is defined in the code (it suppresses floating)
+	\centering
+	\begin{tabular}{p{0.48\textwidth} p{0.48\textwidth}}
+\hline	
+	\multicolumn{1}{|c}{} &  \multicolumn{1}{c|}{} \\
+		\multicolumn{1}{|c}{\includegraphics[width=0.48\textwidth]{../graphics/A2FWHist}} &
+		\multicolumn{1}{c|}{\includegraphics[width=0.48\textwidth]{../graphics/A2FWqq}}\\
+		\hline
+	\end{tabular}		
+	\caption{Normality Plots for Forward Selection Model.}
+	\label{fig:A2FWQQ}
+\end{figure}
+\begin{figure}[H] % [h] forces the figure to be output where it is defined in the code (it suppresses floating)
+	\centering
+	\begin{tabular}{p{0.48\textwidth} p{0.48\textwidth}}
+\hline	
+	\multicolumn{1}{|c}{} &  \multicolumn{1}{c|}{} \\
+		\multicolumn{1}{|c}{\includegraphics[width=0.48\textwidth]{../graphics/A2FWcooks}} &
+		\multicolumn{1}{c|}{\includegraphics[width=0.48\textwidth]{../graphics/A2FWlev}}\\
+		\hline
+	\end{tabular}		
+	\caption{Influential Point Plots for Forward Selection Model.}
+	\label{fig:A2FWIP}
+\end{figure}
+\begin{figure}[H] % [h] forces the figure to be output where it is defined in the code (it suppresses floating)
+	\centering
+	\begin{tabular}{| p{0.60\textwidth}|}
+	\hline
+	\\
+	\includegraphics[width=0.60\textwidth]{../graphics/A2BWscatt}\\
+	\hline
+	\end{tabular}	
+	\caption{Scatter Plot Backward Selection Model.}
+	\label{fig:A2BWscatt}
+\end{figure}
+\begin{figure}[H] % [h] forces the figure to be output where it is defined in the code (it suppresses floating)
+	\centering
+	\begin{tabular}{p{0.48\textwidth} p{0.48\textwidth}}
+	\hline
+	\multicolumn{1}{|c}{} &  \multicolumn{1}{c|}{} \\
+		\multicolumn{1}{|c}{\includegraphics[width=0.48\textwidth]{../graphics/A2BWAss1}} &
+		\multicolumn{1}{c|}{\includegraphics[width=0.48\textwidth]{../graphics/A2BWAss2}}\\
+		\hline
+	\end{tabular}		
+	\caption{Plots for Backward Selection Model.}
+	\label{fig:A2BWAss}
+\end{figure}
+\begin{figure}[H] % [h] forces the figure to be output where it is defined in the code (it suppresses floating)
+	\centering
+	\begin{tabular}{p{0.48\textwidth} p{0.48\textwidth}}
+\hline	
+	\multicolumn{1}{|c}{} &  \multicolumn{1}{c|}{} \\
+		\multicolumn{1}{|c}{\includegraphics[width=0.48\textwidth]{../graphics/A2BWHist}} &
+		\multicolumn{1}{c|}{\includegraphics[width=0.48\textwidth]{../graphics/A2BWqq}}\\
+		\hline
+	\end{tabular}		
+	\caption{Normality Plots for Backward Selection Model.}
+	\label{fig:A2BWQQ}
+\end{figure}
+\begin{figure}[H] % [h] forces the figure to be output where it is defined in the code (it suppresses floating)
+	\centering
+	\begin{tabular}{p{0.48\textwidth} p{0.48\textwidth}}
+\hline	
+	\multicolumn{1}{|c}{} &  \multicolumn{1}{c|}{} \\
+		\multicolumn{1}{|c}{\includegraphics[width=0.48\textwidth]{../graphics/A2BWcooks}} &
+		\multicolumn{1}{c|}{\includegraphics[width=0.48\textwidth]{../graphics/A2BWlev}}\\
+		\hline
+	\end{tabular}		
+	\caption{Influential Point Plots for Backward Selection Model.}
+	\label{fig:A2BWIP}
+\end{figure}
+
+
+
+\begin{figure}[H] % [h] forces the figure to be output where it is defined in the code (it suppresses floating)
+	\centering
+	\begin{tabular}{| p{0.60\textwidth}|}
+	\hline
+	\\
+	\includegraphics[width=0.60\textwidth]{../graphics/A2SWscatt}\\
+	\hline
+	\end{tabular}	
+	\caption{Scatter Plot Stepwise Selection Model.}
+	\label{fig:A2SWscatt}
+\end{figure}
+\begin{figure}[H] % [h] forces the figure to be output where it is defined in the code (it suppresses floating)
+	\centering
+	\begin{tabular}{p{0.48\textwidth} p{0.48\textwidth}}
+	\hline
+	\multicolumn{1}{|c}{} &  \multicolumn{1}{c|}{} \\
+		\multicolumn{1}{|c}{\includegraphics[width=0.48\textwidth]{../graphics/A2SWAss1}} &
+		\multicolumn{1}{c|}{\includegraphics[width=0.48\textwidth]{../graphics/A2SWAss2}}\\
+		\hline
+	\end{tabular}		
+	\caption{Plots for Stepwise Selection Model.}
+	\label{fig:A2SWAss}
+\end{figure}
+\begin{figure}[H] % [h] forces the figure to be output where it is defined in the code (it suppresses floating)
+	\centering
+	\begin{tabular}{p{0.48\textwidth} p{0.48\textwidth}}
+\hline	
+	\multicolumn{1}{|c}{} &  \multicolumn{1}{c|}{} \\
+		\multicolumn{1}{|c}{\includegraphics[width=0.48\textwidth]{../graphics/A2SWHist}} &
+		\multicolumn{1}{c|}{\includegraphics[width=0.48\textwidth]{../graphics/A2SWqq}}\\
+		\hline
+	\end{tabular}		
+	\caption{Normality Plots for Stepwise Selection Model.}
+	\label{fig:A2SWQQ}
+\end{figure}
+\begin{figure}[H] % [h] forces the figure to be output where it is defined in the code (it suppresses floating)
+	\centering
+	\begin{tabular}{p{0.48\textwidth} p{0.48\textwidth}}
+\hline	
+	\multicolumn{1}{|c}{} &  \multicolumn{1}{c|}{} \\
+		\multicolumn{1}{|c}{\includegraphics[width=0.48\textwidth]{../graphics/A2SWcooks}} &
+		\multicolumn{1}{c|}{\includegraphics[width=0.48\textwidth]{../graphics/A2SWlev}}\\
+		\hline
+	\end{tabular}		
+	\caption{Influential Point Plots for Stepwise Selection Model.}
+	\label{fig:A2SWIP}
+\end{figure}
+\pagebreak
+
 \section{Source Code for Analysis 1}
 \label{sec:Analysis1}
 \lstinputlisting[
@@ -334,9 +608,22 @@ CUSTOM & XX & XX & XX\\
 	numbers=left, % Line numbers on left
 	numberstyle=\tiny, % Line numbers styling
 	]{../code/Stepwise.sas}	
+
+\subsection{Custom Model}
+\lstinputlisting[
+	caption=Custom Model SAS Code., % Caption above the listing
+	label=lst:Custom, % Label for referencing this listing
+	language=SAS, % Use SAS functions/syntax highlighting
+	frame=single, % Frame around the code listing
+	showstringspaces=false, % Don't put marks in string spaces
+	numbers=left, % Line numbers on left
+	numberstyle=\tiny, % Line numbers styling
+	]{../code/Stepwise.sas}	
 %------------------------------------------------
 \pagebreak
-\section{High Level Summary of Data}
+
+\section{Summary of Data}
+\label{sec:DataDescription}
 \begin{table}[h] % [h] forces the table to be output where it is defined in the code (it suppresses floating)
 	\centering % Centre the table
 	\begin{tabular}{|l l l l l|}
@@ -378,15 +665,13 @@ CUSTOM & XX & XX & XX\\
 	\label{tab:Data}
 \end{table}
 
-\pagebreak
-\section{Detailed Data Description}
-\label{sec:DataDescription}
 \begin{center}
 \begin{tabular}{c c c c c c}
 \hline
 \multicolumn{6}{|c|}{Classification Variables}\\
 \hline
-\multicolumn{2}{|c}{MSSubClass} & \multicolumn{4}{l|}{Identifies the type of dwelling involved in the sale}\\ \multicolumn{2}{|c}{} & \multicolumn{1}{c}{20} & \multicolumn{3}{l|}{1-STORY 1946 \& NEWER ALL STYLES}\\
+\multicolumn{2}{|c}{MSSubClass} & \multicolumn{4}{l|}{Identifies the type of dwelling involved in the sale}\\ 
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{20} & \multicolumn{3}{l|}{1-STORY 1946 \& NEWER ALL STYLES}\\
 \multicolumn{2}{|c}{} & \multicolumn{1}{c}{30} & \multicolumn{3}{l|}{1-STORY 1945 \& OLDER}\\
 \multicolumn{2}{|c}{} & \multicolumn{1}{c}{40} & \multicolumn{3}{l|}{1-STORY W/FINISHED ATTIC ALL AGES}\\
 \multicolumn{2}{|c}{} & \multicolumn{1}{c}{45} & \multicolumn{3}{l|}{1-1/2 STORY - UNFINISHED ALL AGES}\\
@@ -403,513 +688,519 @@ CUSTOM & XX & XX & XX\\
 \multicolumn{2}{|c}{} & \multicolumn{1}{c}{180} & \multicolumn{3}{l|}{PUD - MULTILEVEL - INCL SPLIT LEV/FOYER}\\
 \multicolumn{2}{|c}{} & \multicolumn{1}{c}{190} & \multicolumn{3}{l|}{2 FAMILY CONVERSION - ALL STYLES AND AGES}\\
 \hline
+\multicolumn{2}{|c}{MSZoning} & \multicolumn{4}{l|}{Identifies the general zoning classification of the sale}\\ 
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{A} & \multicolumn{3}{l|}{Agriculture}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{C} & \multicolumn{3}{l|}{Commercial}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{FV} & \multicolumn{3}{l|}{Floating Village Residential}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{I} & \multicolumn{3}{l|}{Industrial}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{RH} & \multicolumn{3}{l|}{Residential High Density}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{RL} & \multicolumn{3}{l|}{Residential Low Density}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{RP} & \multicolumn{3}{l|}{Residential Low Density Park}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{RM} & \multicolumn{3}{l|}{Residential Medium Density}\\
+\hline	
+\multicolumn{2}{|c}{LotFrontage} & \multicolumn{4}{l|}{Linear feet of street connected to property}\\
+\hline
+\multicolumn{2}{|c}{LotArea} & \multicolumn{4}{l|}{Lot size in square feet}\\
+\hline
+\multicolumn{2}{|c}{Street} & \multicolumn{4}{l|}{Type of road access to property}\\ 
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Grvl} & \multicolumn{3}{l|}{Gravel}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Pave} & \multicolumn{3}{l|}{Paved}\\
+\hline
+\multicolumn{2}{|c}{Alley} & \multicolumn{4}{l|}{Type of alley access to property}\\ 
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Grvl} & \multicolumn{3}{l|}{Gravel}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Pave} & \multicolumn{3}{l|}{Paved}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{NA} & \multicolumn{3}{l|}{No alley access}\\
+\hline
+\multicolumn{2}{|c}{LotShape} & \multicolumn{4}{l|}{General shape of property}\\ 
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Reg} & \multicolumn{3}{l|}{Regular}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{IR1} & \multicolumn{3}{l|}{Slightly Irregular}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{IR2} & \multicolumn{3}{l|}{Moderately Irregular}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{IR3} & \multicolumn{3}{l|}{Irregular}\\
+\hline
+\multicolumn{2}{|c}{LandContour} & \multicolumn{4}{l|}{General shape of property}\\ 
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Lvl} & \multicolumn{3}{l|}{Near Flat/Level}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Bnk} & \multicolumn{3}{l|}{Banked - Quick and significant rise from street grade to building}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{HLS} & \multicolumn{3}{l|}{Hillside - Significant slope from side to side}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Low} & \multicolumn{3}{l|}{Depression}\\
+\hline
+\end{tabular}
+\end{center}
+\begin{center}
+\begin{tabular}{c c c c c c}
+\hline
+\multicolumn{6}{|c|}{Classification Variables}\\
+\hline
+\multicolumn{2}{|c}{Utilities} & \multicolumn{4}{l|}{Identifies the type of dwelling involved in the sale}\\ 
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{AllPub} & \multicolumn{3}{l|}{All public Utilities (E,G,W,\& S)	}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{NoSewr} & \multicolumn{3}{l|}{Electricity, Gas, and Water (Septic Tank)}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{NoSeWa} & \multicolumn{3}{l|}{Electricity and Gas Only}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{ELO} & \multicolumn{3}{l|}{Electricity only}\\
+\hline
+\multicolumn{2}{|c}{LotConfig} & \multicolumn{4}{l|}{Lot configuration}\\ 
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Inside} & \multicolumn{3}{l|}{Inside lot}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Corner} & \multicolumn{3}{l|}{Corner lot}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{CulDSac} & \multicolumn{3}{l|}{Cul-de-sac}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{FR2} & \multicolumn{3}{l|}{Frontage on 2 sides of property}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{FR3} & \multicolumn{3}{l|}{Frontage on 3 sides of property}\\
+\hline
+\multicolumn{2}{|c}{LandSlope} & \multicolumn{4}{l|}{Slope of property}\\ 
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Gtl} & \multicolumn{3}{l|}{Gentle slope}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Mod} & \multicolumn{3}{l|}{Moderate slope}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Sev} & \multicolumn{3}{l|}{Severe slope}\\
+\hline
+\multicolumn{2}{|c}{Neighborhood} & \multicolumn{4}{l|}{Physical locations within Ames city limits}\\ 
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Blmgtn} & \multicolumn{3}{l|}{Bloomington Heights}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Blueste} & \multicolumn{3}{l|}{Bluestem}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{BrDale} & \multicolumn{3}{l|}{Briardale}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{BrkSide} & \multicolumn{3}{l|}{Brookside}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{ClearCr} & \multicolumn{3}{l|}{Clear Creek}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{CollgCr} & \multicolumn{3}{l|}{College Creek}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Crawfor} & \multicolumn{3}{l|}{Crawford}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Edwards} & \multicolumn{3}{l|}{Edwards}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Gilbert} & \multicolumn{3}{l|}{Gilbert}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{IDOTRR} & \multicolumn{3}{l|}{Iowa DOT and Rail Road}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{MeadowV} & \multicolumn{3}{l|}{Meadow Village}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Mitchel} & \multicolumn{3}{l|}{Mitchell}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{NAmes} & \multicolumn{3}{l|}{North Ames}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{NoRidge} & \multicolumn{3}{l|}{Northridge}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{NPkVill} & \multicolumn{3}{l|}{Northpark Villa}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{NridgHt} & \multicolumn{3}{l|}{Northridge Heights}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{NWAmes} & \multicolumn{3}{l|}{Northwest Ames}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{OldTown} & \multicolumn{3}{l|}{Old Town}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{SWISU} & \multicolumn{3}{l|}{South \& West of Iowa State University}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Sawyer} & \multicolumn{3}{l|}{Sawyer}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{SawyerW} & \multicolumn{3}{l|}{Sawyer West}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Somerst} & \multicolumn{3}{l|}{Somerset}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{StoneBr} & \multicolumn{3}{l|}{Stone Brook}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Timber} & \multicolumn{3}{l|}{Timberland}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Veenker} & \multicolumn{3}{l|}{Veenker}\\
+\hline
+\multicolumn{2}{|c}{Condition1} & \multicolumn{4}{l|}{Proximity to various conditions}\\ 
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Artery} & \multicolumn{3}{l|}{Adjacent to arterial street}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Feedr} & \multicolumn{3}{l|}{Adjacent to feeder street}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Norm} & \multicolumn{3}{l|}{Normal}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{RRNn} & \multicolumn{3}{l|}{Within 200' of North-South Railroad}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{RRAn} & \multicolumn{3}{l|}{Adjacent to North-South Railroad}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{PosN} & \multicolumn{3}{l|}{Near positive off-site feature--park, greenbelt, etc.}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{PosA} & \multicolumn{3}{l|}{Adjacent to postive off-site feature}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{RRNe} & \multicolumn{3}{l|}{Within 200' of East-West Railroad}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{RRAe} & \multicolumn{3}{l|}{Adjacent to East-West Railroad}\\
+\hline
+\end{tabular}
+\end{center}
+\begin{center}
+\begin{tabular}{c c c c c c}
+\hline
+\multicolumn{6}{|c|}{Classification Variables}\\
+\hline
+\multicolumn{2}{|c}{Condition2} & \multicolumn{4}{l|}{Proximity to various conditions (if more than one is present)}\\ 
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Artery} & \multicolumn{3}{l|}{Adjacent to arterial street}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Feedr} & \multicolumn{3}{l|}{Adjacent to feeder street}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Norm} & \multicolumn{3}{l|}{Normal}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{RRNn} & \multicolumn{3}{l|}{Within 200' of North-South Railroad}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{RRAn} & \multicolumn{3}{l|}{Adjacent to North-South Railroad}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{PosN} & \multicolumn{3}{l|}{Near positive off-site feature--park, greenbelt, etc.}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{PosA} & \multicolumn{3}{l|}{Adjacent to postive off-site feature}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{RRNe} & \multicolumn{3}{l|}{Within 200' of East-West Railroad}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{RRAe} & \multicolumn{3}{l|}{Adjacent to East-West Railroad}\\
+\hline
+\multicolumn{2}{|c}{BldgType} & \multicolumn{4}{l|}{Type of dwelling}\\ 
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{1Fam} & \multicolumn{3}{l|}{Adjacent to arterial street}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{2FmCon} & \multicolumn{3}{l|}{Adjacent to feeder street}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Duplx} & \multicolumn{3}{l|}{Normal}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{TwnhsE} & \multicolumn{3}{l|}{Normal}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{TwnhsI} & \multicolumn{3}{l|}{Normal}\\
+\hline
+\multicolumn{2}{|c}{HouseStyle} & \multicolumn{4}{l|}{Style of dwelling}\\ 
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{1Story} & \multicolumn{3}{l|}{One story}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{1.5Fin} & \multicolumn{3}{l|}{One and one-half story: 2nd level finished}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{1.5Unf} & \multicolumn{3}{l|}{One and one-half story: 2nd level unfinished}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{2Story} & \multicolumn{3}{l|}{Two story}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{2.5Fin} & \multicolumn{3}{l|}{Two and one-half story: 2nd level finished}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{2.5Unf} & \multicolumn{3}{l|}{Two and one-half story: 2nd level unfinished}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{SFoyer} & \multicolumn{3}{l|}{Split Foyer}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{SLvl} & \multicolumn{3}{l|}{Split Level}\\
+\hline
+\multicolumn{2}{|c}{OverallQual} & \multicolumn{4}{l|}{Rates the overall material and finish of the house}\\ 
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{10} & \multicolumn{3}{l|}{Very Excellent}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{9} & \multicolumn{3}{l|}{Excellent}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{8} & \multicolumn{3}{l|}{Very Good}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{7} & \multicolumn{3}{l|}{Good}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{6} & \multicolumn{3}{l|}{Above Average}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{5} & \multicolumn{3}{l|}{Average}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{4} & \multicolumn{3}{l|}{Below Average}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{3} & \multicolumn{3}{l|}{Fair}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{2} & \multicolumn{3}{l|}{Poor}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{1} & \multicolumn{3}{l|}{Very Poor}\\
+\hline
+\multicolumn{2}{|c}{OverallQual} & \multicolumn{4}{l|}{Rates the overall material and finish of the house}\\ 
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{10} & \multicolumn{3}{l|}{Very Excellent}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{9} & \multicolumn{3}{l|}{Excellent}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{8} & \multicolumn{3}{l|}{Very Good}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{7} & \multicolumn{3}{l|}{Good}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{6} & \multicolumn{3}{l|}{Above Average}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{5} & \multicolumn{3}{l|}{Average}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{4} & \multicolumn{3}{l|}{Below Average}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{3} & \multicolumn{3}{l|}{Fair}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{2} & \multicolumn{3}{l|}{Poor}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{1} & \multicolumn{3}{l|}{Very Poor}\\
+\hline
+\end{tabular}
+\end{center}
+\begin{center}
+\begin{tabular}{c c c c c c}
+\hline
+\multicolumn{6}{|c|}{Classification Variables}\\
+\hline
+\multicolumn{2}{|c}{YearBuilt} & \multicolumn{4}{l|}{Original construction date}\\
+\hline
+\multicolumn{2}{|c}{YearRemodAdd} & \multicolumn{4}{l|}{Remodel date (same as construction date if no remodeling or additions)}\\
+\hline
+\multicolumn{2}{|c}{RoofStyle} & \multicolumn{4}{l|}{Type of roof}\\ 
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Flat} & \multicolumn{3}{l|}{Flat}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Gable} & \multicolumn{3}{l|}{Gable}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Gambrel} & \multicolumn{3}{l|}{Gabrel (Barn)}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Hip} & \multicolumn{3}{l|}{Hip}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Mansard} & \multicolumn{3}{l|}{Mansard}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Shed} & \multicolumn{3}{l|}{Shed}\\
+\hline
+\multicolumn{2}{|c}{RoofMatl} & \multicolumn{4}{l|}{Roof material}\\ 
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{ClyTile} & \multicolumn{3}{l|}{Clay or Tile}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{CompShg} & \multicolumn{3}{l|}{Standard (Composite) Shingle}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Membran} & \multicolumn{3}{l|}{Membrane}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Metal} & \multicolumn{3}{l|}{Metal}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Roll} & \multicolumn{3}{l|}{Roll}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Tar\&Grv} & \multicolumn{3}{l|}{Gravel \& Tar}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{WdShake} & \multicolumn{3}{l|}{Wood Shakes}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{WdShngl} & \multicolumn{3}{l|}{Wood Shingles}\\
+\hline
+\multicolumn{2}{|c}{Exterior1st} & \multicolumn{4}{l|}{Exterior covering on house}\\ 
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{AsbShng} & \multicolumn{3}{l|}{Asbestos Shingles}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{AsphShn} & \multicolumn{3}{l|}{Asphalt Shingles}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{BrkComm} & \multicolumn{3}{l|}{Brick Common}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{BrkFace} & \multicolumn{3}{l|}{Brick Face}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{CBlock} & \multicolumn{3}{l|}{Cinder Block}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{CemntBd} & \multicolumn{3}{l|}{Cement Board}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{HdBoard} & \multicolumn{3}{l|}{Hard Board}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{ImStucc} & \multicolumn{3}{l|}{Imitation Stucco}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{MetalSd} & \multicolumn{3}{l|}{Metal Siding}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Other} & \multicolumn{3}{l|}{Other}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Plywood} & \multicolumn{3}{l|}{Plywood}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{PreCast} & \multicolumn{3}{l|}{PreCast}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Stone	} & \multicolumn{3}{l|}{Stone}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Stucco} & \multicolumn{3}{l|}{Stucco}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{VinylSd} & \multicolumn{3}{l|}{Vinyl Siding}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Wd Sdng} & \multicolumn{3}{l|}{Wood Siding}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{WdShing} & \multicolumn{3}{l|}{Wood Shingles}\\
+\hline
+\end{tabular}
+\end{center}
+\begin{center}
+\begin{tabular}{c c c c c c}
+\hline
+\multicolumn{6}{|c|}{Classification Variables}\\
+\hline
+\multicolumn{2}{|c}{Exterior2nd} & \multicolumn{4}{l|}{Exterior covering on house (if more than one material)}\\ 
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{AsbShng} & \multicolumn{3}{l|}{Asbestos Shingles}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{AsphShn} & \multicolumn{3}{l|}{Asphalt Shingles}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{BrkComm} & \multicolumn{3}{l|}{Brick Common}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{BrkFace} & \multicolumn{3}{l|}{Brick Face}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{CBlock} & \multicolumn{3}{l|}{Cinder Block}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{CemntBd} & \multicolumn{3}{l|}{Cement Board}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{HdBoard} & \multicolumn{3}{l|}{Hard Board}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{ImStucc} & \multicolumn{3}{l|}{Imitation Stucco}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{MetalSd} & \multicolumn{3}{l|}{Metal Siding}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Other} & \multicolumn{3}{l|}{Other}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Plywood} & \multicolumn{3}{l|}{Plywood}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{PreCast} & \multicolumn{3}{l|}{PreCast}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Stone	} & \multicolumn{3}{l|}{Stone}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Stucco} & \multicolumn{3}{l|}{Stucco}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{VinylSd} & \multicolumn{3}{l|}{Vinyl Siding}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Wd Sdng} & \multicolumn{3}{l|}{Wood Siding}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{WdShing} & \multicolumn{3}{l|}{Wood Shingles}\\
+\hline
+\multicolumn{2}{|c}{MasVnrType} & \multicolumn{4}{l|}{Masonry veneer type}\\ 
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{BrkCmn} & \multicolumn{3}{l|}{Brick Common}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{BrkFace} & \multicolumn{3}{l|}{Brick Face}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{CBlock} & \multicolumn{3}{l|}{Cinder Block}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{None} & \multicolumn{3}{l|}{None}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Stone} & \multicolumn{3}{l|}{Stone}\\
+\hline
+\multicolumn{2}{|c}{MasVnrArea} & \multicolumn{4}{l|}{Masonry veneer area in square feet}\\
+\hline
+\multicolumn{2}{|c}{ExterQual} & \multicolumn{4}{l|}{Evaluates the quality of the material on the exterior}\\ 
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Ex} & \multicolumn{3}{l|}{Excellent}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Gd} & \multicolumn{3}{l|}{Good}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{TA} & \multicolumn{3}{l|}{Average/Typical}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Fa} & \multicolumn{3}{l|}{Fair}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Po} & \multicolumn{3}{l|}{Poor}\\
+\hline
+\multicolumn{2}{|c}{ExterCond} & \multicolumn{4}{l|}{Evaluates the present condition of the material on the exterior}\\ 
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Ex} & \multicolumn{3}{l|}{Excellent}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Gd} & \multicolumn{3}{l|}{Good}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{TA} & \multicolumn{3}{l|}{Average/Typical}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Fa} & \multicolumn{3}{l|}{Fair}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Po} & \multicolumn{3}{l|}{Poor}\\
+\hline
+\end{tabular}
+\end{center}
+\begin{center}
+\begin{tabular}{c c c c c c}
+\hline
+\multicolumn{2}{|c}{Foundation} & \multicolumn{4}{l|}{Type of foundation}\\ 
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{BrkTil} & \multicolumn{3}{l|}{Brick \& Tile}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{CBlock} & \multicolumn{3}{l|}{Cinder Block}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{PConc} & \multicolumn{3}{l|}{Poured Concrete}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Slab} & \multicolumn{3}{l|}{Slab}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Stone} & \multicolumn{3}{l|}{Stone}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Wood} & \multicolumn{3}{l|}{Wood}\\
+\hline
+\multicolumn{2}{|c}{BsmtQual} & \multicolumn{4}{l|}{Evaluates the height of the basement}\\ 
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Ex} & \multicolumn{3}{l|}{Excellent (100+ inches)}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Gd} & \multicolumn{3}{l|}{Good (90-99 inches)}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{TA} & \multicolumn{3}{l|}{Typical (80-89 inches)}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Fa} & \multicolumn{3}{l|}{Fair (70-79 inches)}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Po} & \multicolumn{3}{l|}{Poor (<70 inches)}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{NA} & \multicolumn{3}{l|}{No Basement}\\
+\hline
+\multicolumn{2}{|c}{BsmtCond} & \multicolumn{4}{l|}{Evaluates the general condition of the basement}\\ 
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Ex} & \multicolumn{3}{l|}{Excellent}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Gd} & \multicolumn{3}{l|}{Good}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{TA} & \multicolumn{3}{l|}{Typical - slight dampness allowed}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Fa} & \multicolumn{3}{l|}{Fair - dampness or some cracking or settling}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Po} & \multicolumn{3}{l|}{Poor - Severe cracking, settling, or wetness}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{NA} & \multicolumn{3}{l|}{No Basement}\\
+\hline
+\multicolumn{2}{|c}{BsmtExposure} & \multicolumn{4}{l|}{Refers to walkout or garden level walls}\\ 
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Gd} & \multicolumn{3}{l|}{Good Exposure}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Av} & \multicolumn{3}{l|}{Average Exposure }\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Av} & \multicolumn{3}{l|}{(split levels or foyers typically score average or above)}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Mn} & \multicolumn{3}{l|}{Mimimum Exposure}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{No} & \multicolumn{3}{l|}{No Exposure}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{NA} & \multicolumn{3}{l|}{No Basement}\\
+\hline
+\multicolumn{2}{|c}{BsmtFinType1} & \multicolumn{4}{l|}{Rating of basement finished area}\\ 
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{GLQ} & \multicolumn{3}{l|}{Good Living Quarters}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{ALQ} & \multicolumn{3}{l|}{Average Living Quarters}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{BLQ} & \multicolumn{3}{l|}{Below Average Living Quarters}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Rec} & \multicolumn{3}{l|}{Average Rec Room}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{LwQ} & \multicolumn{3}{l|}{Low Quality}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Unf} & \multicolumn{3}{l|}{Unfinshed}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{NA} & \multicolumn{3}{l|}{No Basement}\\
+\hline
+\multicolumn{2}{|c}{BsmtFinSF1} & \multicolumn{4}{l|}{Type 1 finished square feet}\\
+\hline
+\multicolumn{2}{|c}{BsmtFinType2} & \multicolumn{4}{l|}{Rating of basement finished area (if multiple types)}\\ 
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{GLQ} & \multicolumn{3}{l|}{Good Living Quarters}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{ALQ} & \multicolumn{3}{l|}{Average Living Quarters}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{BLQ} & \multicolumn{3}{l|}{Below Average Living Quarters}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Rec} & \multicolumn{3}{l|}{Average Rec Room}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{LwQ} & \multicolumn{3}{l|}{Low Quality}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Unf} & \multicolumn{3}{l|}{Unfinshed}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{NA} & \multicolumn{3}{l|}{No Basement}\\
+\hline
+\multicolumn{2}{|c}{BsmtFinSF2} & \multicolumn{4}{l|}{Type 2 finished square feet}\\
+\hline
+\multicolumn{2}{|c}{BsmtUnfSF} & \multicolumn{4}{l|}{Unfinished square feet of basement area}\\
+\hline
+\multicolumn{2}{|c}{TotalBsmtSF} & \multicolumn{4}{l|}{Total square feet of basement area}\\
+\hline
+\end{tabular}
+\end{center}
+\begin{center}
+\begin{tabular}{c c c c c c}
+\hline
+\multicolumn{2}{|c}{Heating} & \multicolumn{4}{l|}{Type of heating}\\ 
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Floor} & \multicolumn{3}{l|}{Floor Furnace}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{GasA} & \multicolumn{3}{l|}{Gas forced warm air furnace}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{GasW} & \multicolumn{3}{l|}{Gas hot water or steam heat}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Grav} & \multicolumn{3}{l|}{Gravity furnace}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{OthW} & \multicolumn{3}{l|}{Hot water or steam heat other than gas}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Wall} & \multicolumn{3}{l|}{Wall furnace}\\
+\hline
+\multicolumn{2}{|c}{HeatingQC} & \multicolumn{4}{l|}{Heating quality and condition}\\ 
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Ex} & \multicolumn{3}{l|}{Excellent}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Gd} & \multicolumn{3}{l|}{Good}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{TA} & \multicolumn{3}{l|}{Average/Typical}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Fa} & \multicolumn{3}{l|}{Fair}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Po} & \multicolumn{3}{l|}{Poor}\\
+\hline
+\multicolumn{2}{|c}{CentralAir} & \multicolumn{4}{l|}{Central air conditioning}\\ 
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{N} & \multicolumn{3}{l|}{No}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Y} & \multicolumn{3}{l|}{Yes}\\
+\hline
+\multicolumn{2}{|c}{Electrical} & \multicolumn{4}{l|}{Electrical system}\\ 
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{SBrkr} & \multicolumn{3}{l|}{Standard Circuit Breakers \& Romex}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{FuseA} & \multicolumn{3}{l|}{Fuse Box over 60 AMP and all Romex wiring (Average)}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{FuseF} & \multicolumn{3}{l|}{60 AMP Fuse Box and mostly Romex wiring (Fair)}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{FuseP} & \multicolumn{3}{l|}{AMP Fuse Box and mostly knob \& tube wiring (poor)}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Mix} & \multicolumn{3}{l|}{Mixed}\\
+\hline
+\multicolumn{2}{|c}{1stFlrSF} & \multicolumn{4}{l|}{First Floor square feet}\\
+\hline
+\multicolumn{2}{|c}{2ndFlrSF} & \multicolumn{4}{l|}{Second Floor square feet}\\
+\hline
+\multicolumn{2}{|c}{LowQualFinSF} & \multicolumn{4}{l|}{Low quality finished square feet (all floors)}\\
+\hline
+\multicolumn{2}{|c}{GrLivArea} & \multicolumn{4}{l|}{Above grade (ground) living area square feet}\\
+\hline
+\multicolumn{2}{|c}{BsmtFullBath} & \multicolumn{4}{l|}{Basement full bathrooms}\\
+\hline
+\multicolumn{2}{|c}{BsmtHalfBath} & \multicolumn{4}{l|}{Basement half bathrooms}\\
+\hline
+\multicolumn{2}{|c}{FullBath} & \multicolumn{4}{l|}{Full bathrooms above grade}\\
+\hline
+\multicolumn{2}{|c}{HalfBath} & \multicolumn{4}{l|}{Half baths above grade}\\
+\hline
+\multicolumn{2}{|c}{Bedroom} & \multicolumn{4}{l|}{Bedrooms above grade (does NOT include basement bedrooms)}\\
+\hline
+\multicolumn{2}{|c}{Kitchen} & \multicolumn{4}{l|}{Kitchens above grade}\\
+\hline
+\multicolumn{2}{|c}{KitchenQual} & \multicolumn{4}{l|}{Electrical system}\\ 
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Ex} & \multicolumn{3}{l|}{Excellent}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Gd} & \multicolumn{3}{l|}{Good}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{TA} & \multicolumn{3}{l|}{Average/Typical}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Fa} & \multicolumn{3}{l|}{Fair}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Po} & \multicolumn{3}{l|}{Poor}\\
+\hline
+\multicolumn{2}{|c}{TotRmsAbvGrd} & \multicolumn{4}{l|}{Total rooms above grade (does not include bathrooms)}\\
+\hline
+\multicolumn{2}{|c}{Functional} & \multicolumn{4}{l|}{Home functionality (Assume typical unless deductions are warranted)}\\ 
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Typ} & \multicolumn{3}{l|}{Typical Functionality}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Min1} & \multicolumn{3}{l|}{Minor Deductions 1}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Min2} & \multicolumn{3}{l|}{Minor Deductions 2}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Mod} & \multicolumn{3}{l|}{Moderate Deductions}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Maj1} & \multicolumn{3}{l|}{Major Deductions 1}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Maj2} & \multicolumn{3}{l|}{Major Deductions 2}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Sev} & \multicolumn{3}{l|}{Severely Damaged}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Sal} & \multicolumn{3}{l|}{Salvage only}\\
+\hline
+\multicolumn{2}{|c}{Fireplaces} & \multicolumn{4}{l|}{Number of fireplaces}\\
+\hline
+\end{tabular}
+\end{center}
+\begin{center}
+\begin{tabular}{c c c c c c}
+\hline
+\multicolumn{6}{|c|}{Classification Variables}\\
+\hline
+\multicolumn{2}{|c}{FireplaceQu} & \multicolumn{4}{l|}{Electrical system}\\ 
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Ex} & \multicolumn{3}{l|}{Excellent - Exceptional Masonry Fireplace}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Gd} & \multicolumn{3}{l|}{Good - Masonry Fireplace in main level}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{TA} & \multicolumn{3}{l|}{Average - Prefabricated Fireplace in main living area }\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{} & \multicolumn{3}{l|}{ or Masonry Fireplace in basement}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Fa} & \multicolumn{3}{l|}{Fair - Prefabricated Fireplace in basement}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Po} & \multicolumn{3}{l|}{Poor - Ben Franklin Stove}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{NA} & \multicolumn{3}{l|}{No Fireplace}\\
+\hline
+\multicolumn{2}{|c}{GarageType} & \multicolumn{4}{l|}{Garage location}\\ 
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{2Types} & \multicolumn{3}{l|}{More than one type of garage}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Attchd} & \multicolumn{3}{l|}{Attached to home}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Basment} & \multicolumn{3}{l|}{Basement Garage}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{BuiltIn} & \multicolumn{3}{l|}{Built-In (Garage part of house - typically has room above garage)}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{CarPort} & \multicolumn{3}{l|}{Car Port}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Detchd} & \multicolumn{3}{l|}{Detached from home}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{NA} & \multicolumn{3}{l|}{No Garage}\\
+\hline
+\multicolumn{2}{|c}{GarageYrBlt} & \multicolumn{4}{l|}{Year garage was built}\\
+\hline
+\multicolumn{2}{|c}{GarageFinish} & \multicolumn{4}{l|}{Interior finish of the garage}\\ 
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Fin} & \multicolumn{3}{l|}{Finished}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{RFn} & \multicolumn{3}{l|}{Rough Finished}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Unf} & \multicolumn{3}{l|}{Unfinished}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{NA} & \multicolumn{3}{l|}{No Garage}\\
+\hline
+\multicolumn{2}{|c}{GarageCars} & \multicolumn{4}{l|}{Size of garage in car capacity}\\
+\hline
+\multicolumn{2}{|c}{GarageArea} & \multicolumn{4}{l|}{Size of garage in square feet}\\
+\hline
+\multicolumn{2}{|c}{GarageQual} & \multicolumn{4}{l|}{Garage quality}\\ 
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Ex} & \multicolumn{3}{l|}{Excellent}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Gd} & \multicolumn{3}{l|}{Good}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{TA} & \multicolumn{3}{l|}{Typical/Average}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Fa} & \multicolumn{3}{l|}{Fair}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Po} & \multicolumn{3}{l|}{Poor}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{NA} & \multicolumn{3}{l|}{No Garage}\\
+\hline
+\multicolumn{2}{|c}{PavedDrive} & \multicolumn{4}{l|}{Paved driveway}\\ 
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Y} & \multicolumn{3}{l|}{Paved}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{P} & \multicolumn{3}{l|}{Partial Pavement}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{N} & \multicolumn{3}{l|}{Dirt/Gravel}\\
+\hline
+\multicolumn{2}{|c}{WoodDeckSF} & \multicolumn{4}{l|}{Wood deck area in square feet}\\
+\hline
+\multicolumn{2}{|c}{OpenPorchSF} & \multicolumn{4}{l|}{Open porch area in square feet}\\
+\hline
+\multicolumn{2}{|c}{EnclosedPorch} & \multicolumn{4}{l|}{Enclosed porch area in square feet}\\
+\hline
+\multicolumn{2}{|c}{3SsnPorch} & \multicolumn{4}{l|}{Three season porch area in square feet}\\
+\hline
+\multicolumn{2}{|c}{ScreenPorch} & \multicolumn{4}{l|}{Screen porch area in square feet}\\
+\hline
+\multicolumn{2}{|c}{PoolArea} & \multicolumn{4}{l|}{Pool area in square feet}\\
+\hline
+\multicolumn{2}{|c}{PoolQC} & \multicolumn{4}{l|}{Garage quality}\\ 
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Ex} & \multicolumn{3}{l|}{Excellent}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Gd} & \multicolumn{3}{l|}{Good}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{TA} & \multicolumn{3}{l|}{Typical/Average}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Fa} & \multicolumn{3}{l|}{Fair}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{NA} & \multicolumn{3}{l|}{No Pool}\\
+\hline
+\end{tabular}
+\end{center}
+\begin{center}
+\begin{tabular}{c c c c c c}
+\hline
+\multicolumn{6}{|c|}{Classification Variables}\\
+\hline
+\multicolumn{2}{|c}{Fence} & \multicolumn{4}{l|}{Fence quality}\\ 
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{GdPrv} & \multicolumn{3}{l|}{Good Privacy}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{MnPrv} & \multicolumn{3}{l|}{Minimum Privacy}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{GdWo} & \multicolumn{3}{l|}{Good Wood}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{MnWw} & \multicolumn{3}{l|}{Minimum Wood/Wire}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{NA} & \multicolumn{3}{l|}{No Fence}\\
+\hline
+\hline
+\multicolumn{2}{|c}{MiscFeature} & \multicolumn{4}{l|}{Miscellaneous feature not covered in other categories}\\ 
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Elev} & \multicolumn{3}{l|}{Elevator}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Gar2} & \multicolumn{3}{l|}{2nd Garage (if not described in garage section)}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Othr} & \multicolumn{3}{l|}{Other}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Shed} & \multicolumn{3}{l|}{Shed (over 100 SF)}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{TenC} & \multicolumn{3}{l|}{Tennis Court}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{NA} & \multicolumn{3}{l|}{None}\\
+\hline
+\multicolumn{2}{|c}{MiscVal} & \multicolumn{4}{l|}{\$Value of miscellaneous feature}\\
+\hline
+\multicolumn{2}{|c}{MoSold} & \multicolumn{4}{l|}{Month Sold (MM)}\\
+\hline
+\multicolumn{2}{|c}{YrSold} & \multicolumn{4}{l|}{Year Sold (YYYY)}\\
+\hline
+\multicolumn{2}{|c}{SaleType} & \multicolumn{4}{l|}{Type of sale}\\ 
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{WD} & \multicolumn{3}{l|}{Warranty Deed - Conventional}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{CWD} & \multicolumn{3}{l|}{Warranty Deed - Cash}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{VWD} & \multicolumn{3}{l|}{Warranty Deed - VA Loan}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{New} & \multicolumn{3}{l|}{Home just constructed and sold}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{COD} & \multicolumn{3}{l|}{Court Officer Deed/Estate}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Con} & \multicolumn{3}{l|}{Contract 15\% Down payment regular terms}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{ConLw} & \multicolumn{3}{l|}{Contract Low Down payment and low interest}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{ConLI} & \multicolumn{3}{l|}{Contract Low Interest}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{ConLD} & \multicolumn{3}{l|}{Contract Low Down}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Oth} & \multicolumn{3}{l|}{Other}\\
+\hline
+\multicolumn{2}{|c}{SaleCondition} & \multicolumn{4}{l|}{Condition of sale}\\ 
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Normal} & \multicolumn{3}{l|}{Normal Sale}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Abnorml} & \multicolumn{3}{l|}{Abnormal Sale -  trade, foreclosure, short sale}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{AdjLand} & \multicolumn{3}{l|}{Adjoining Land Purchase}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Alloca} & \multicolumn{3}{l|}{Allocation - two linked properties with separate deeds,}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{} & \multicolumn{3}{l|}{typically condo with a garage unit}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Family} & \multicolumn{3}{l|}{Sale between family members}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{Partial} & \multicolumn{3}{l|}{Home was not completed when last assessed}\\
+\multicolumn{2}{|c}{} & \multicolumn{1}{c}{} & \multicolumn{3}{l|}{(associated with New Homes)}\\
+\hline
 \end{tabular}
 \end{center}
 \end{document}
-MSZoning: Identifies the general zoning classification of the sale.
-		
-       A	Agriculture
-       C	Commercial
-       FV	Floating Village Residential
-       I	Industrial
-       RH	Residential High Density
-       RL	Residential Low Density
-       RP	Residential Low Density Park 
-       RM	Residential Medium Density
-	
-LotFrontage: Linear feet of street connected to property
 
-LotArea: Lot size in square feet
-
-Street: Type of road access to property
-
-       Grvl	Gravel	
-       Pave	Paved
-       	
-Alley: Type of alley access to property
-
-       Grvl	Gravel
-       Pave	Paved
-       NA 	No alley access
-		
-LotShape: General shape of property
-
-       Reg	Regular	
-       IR1	Slightly irregular
-       IR2	Moderately Irregular
-       IR3	Irregular
-       
-LandContour: Flatness of the property
-
-       Lvl	Near Flat/Level	
-       Bnk	Banked - Quick and significant rise from street grade to building
-       HLS	Hillside - Significant slope from side to side
-       Low	Depression
-		
-Utilities: Type of utilities available
-		
-       AllPub	All public Utilities (E,G,W,& S)	
-       NoSewr	Electricity, Gas, and Water (Septic Tank)
-       NoSeWa	Electricity and Gas Only
-       ELO	Electricity only	
-	
-LotConfig: Lot configuration
-
-       Inside	Inside lot
-       Corner	Corner lot
-       CulDSac	Cul-de-sac
-       FR2	Frontage on 2 sides of property
-       FR3	Frontage on 3 sides of property
-	
-LandSlope: Slope of property
-		
-       Gtl	Gentle slope
-       Mod	Moderate Slope	
-       Sev	Severe Slope
-	
-Neighborhood: Physical locations within Ames city limits
-
-       Blmngtn	Bloomington Heights
-       Blueste	Bluestem
-       BrDale	Briardale
-       BrkSide	Brookside
-       ClearCr	Clear Creek
-       CollgCr	College Creek
-       Crawfor	Crawford
-       Edwards	Edwards
-       Gilbert	Gilbert
-       IDOTRR	Iowa DOT and Rail Road
-       MeadowV	Meadow Village
-       Mitchel	Mitchell
-       Names	North Ames
-       NoRidge	Northridge
-       NPkVill	Northpark Villa
-       NridgHt	Northridge Heights
-       NWAmes	Northwest Ames
-       OldTown	Old Town
-       SWISU	South & West of Iowa State University
-       Sawyer	Sawyer
-       SawyerW	Sawyer West
-       Somerst	Somerset
-       StoneBr	Stone Brook
-       Timber	Timberland
-       Veenker	Veenker
-			
-Condition1: Proximity to various conditions
-	
-       Artery	Adjacent to arterial street
-       Feedr	Adjacent to feeder street	
-       Norm	Normal	
-       RRNn	Within 200' of North-South Railroad
-       RRAn	Adjacent to North-South Railroad
-       PosN	Near positive off-site feature--park, greenbelt, etc.
-       PosA	Adjacent to postive off-site feature
-       RRNe	Within 200' of East-West Railroad
-       RRAe	Adjacent to East-West Railroad
-	
-Condition2: Proximity to various conditions (if more than one is present)
-		
-       Artery	Adjacent to arterial street
-       Feedr	Adjacent to feeder street	
-       Norm	Normal	
-       RRNn	Within 200' of North-South Railroad
-       RRAn	Adjacent to North-South Railroad
-       PosN	Near positive off-site feature--park, greenbelt, etc.
-       PosA	Adjacent to postive off-site feature
-       RRNe	Within 200' of East-West Railroad
-       RRAe	Adjacent to East-West Railroad
-	
-BldgType: Type of dwelling
-		
-       1Fam	Single-family Detached	
-       2FmCon	Two-family Conversion; originally built as one-family dwelling
-       Duplx	Duplex
-       TwnhsE	Townhouse End Unit
-       TwnhsI	Townhouse Inside Unit
-	
-HouseStyle: Style of dwelling
-	
-       1Story	One story
-       1.5Fin	One and one-half story: 2nd level finished
-       1.5Unf	One and one-half story: 2nd level unfinished
-       2Story	Two story
-       2.5Fin	Two and one-half story: 2nd level finished
-       2.5Unf	Two and one-half story: 2nd level unfinished
-       SFoyer	Split Foyer
-       SLvl	Split Level
-	
-OverallQual: Rates the overall material and finish of the house
-
-       10	Very Excellent
-       9	Excellent
-       8	Very Good
-       7	Good
-       6	Above Average
-       5	Average
-       4	Below Average
-       3	Fair
-       2	Poor
-       1	Very Poor
-	
-OverallCond: Rates the overall condition of the house
-
-       10	Very Excellent
-       9	Excellent
-       8	Very Good
-       7	Good
-       6	Above Average	
-       5	Average
-       4	Below Average	
-       3	Fair
-       2	Poor
-       1	Very Poor
-		
-YearBuilt: Original construction date
-
-YearRemodAdd: Remodel date (same as construction date if no remodeling or additions)
-
-RoofStyle: Type of roof
-
-       Flat	Flat
-       Gable	Gable
-       Gambrel	Gabrel (Barn)
-       Hip	Hip
-       Mansard	Mansard
-       Shed	Shed
-		
-RoofMatl: Roof material
-
-       ClyTile	Clay or Tile
-       CompShg	Standard (Composite) Shingle
-       Membran	Membrane
-       Metal	Metal
-       Roll	Roll
-       Tar&Grv	Gravel & Tar
-       WdShake	Wood Shakes
-       WdShngl	Wood Shingles
-		
-Exterior1st: Exterior covering on house
-
-       AsbShng	Asbestos Shingles
-       AsphShn	Asphalt Shingles
-       BrkComm	Brick Common
-       BrkFace	Brick Face
-       CBlock	Cinder Block
-       CemntBd	Cement Board
-       HdBoard	Hard Board
-       ImStucc	Imitation Stucco
-       MetalSd	Metal Siding
-       Other	Other
-       Plywood	Plywood
-       PreCast	PreCast	
-       Stone	Stone
-       Stucco	Stucco
-       VinylSd	Vinyl Siding
-       Wd Sdng	Wood Siding
-       WdShing	Wood Shingles
-	
-Exterior2nd: Exterior covering on house (if more than one material)
-
-       AsbShng	Asbestos Shingles
-       AsphShn	Asphalt Shingles
-       BrkComm	Brick Common
-       BrkFace	Brick Face
-       CBlock	Cinder Block
-       CemntBd	Cement Board
-       HdBoard	Hard Board
-       ImStucc	Imitation Stucco
-       MetalSd	Metal Siding
-       Other	Other
-       Plywood	Plywood
-       PreCast	PreCast
-       Stone	Stone
-       Stucco	Stucco
-       VinylSd	Vinyl Siding
-       Wd Sdng	Wood Siding
-       WdShing	Wood Shingles
-	
-MasVnrType: Masonry veneer type
-
-       BrkCmn	Brick Common
-       BrkFace	Brick Face
-       CBlock	Cinder Block
-       None	None
-       Stone	Stone
-	
-MasVnrArea: Masonry veneer area in square feet
-
-ExterQual: Evaluates the quality of the material on the exterior 
-		
-       Ex	Excellent
-       Gd	Good
-       TA	Average/Typical
-       Fa	Fair
-       Po	Poor
-		
-ExterCond: Evaluates the present condition of the material on the exterior
-		
-       Ex	Excellent
-       Gd	Good
-       TA	Average/Typical
-       Fa	Fair
-       Po	Poor
-		
-Foundation: Type of foundation
-		
-       BrkTil	Brick & Tile
-       CBlock	Cinder Block
-       PConc	Poured Contrete	
-       Slab	Slab
-       Stone	Stone
-       Wood	Wood
-		
-BsmtQual: Evaluates the height of the basement
-
-       Ex	Excellent (100+ inches)	
-       Gd	Good (90-99 inches)
-       TA	Typical (80-89 inches)
-       Fa	Fair (70-79 inches)
-       Po	Poor (<70 inches
-       NA	No Basement
-		
-BsmtCond: Evaluates the general condition of the basement
-
-       Ex	Excellent
-       Gd	Good
-       TA	Typical - slight dampness allowed
-       Fa	Fair - dampness or some cracking or settling
-       Po	Poor - Severe cracking, settling, or wetness
-       NA	No Basement
-	
-BsmtExposure: Refers to walkout or garden level walls
-
-       Gd	Good Exposure
-       Av	Average Exposure (split levels or foyers typically score average or above)	
-       Mn	Mimimum Exposure
-       No	No Exposure
-       NA	No Basement
-	
-BsmtFinType1: Rating of basement finished area
-
-       GLQ	Good Living Quarters
-       ALQ	Average Living Quarters
-       BLQ	Below Average Living Quarters	
-       Rec	Average Rec Room
-       LwQ	Low Quality
-       Unf	Unfinshed
-       NA	No Basement
-		
-BsmtFinSF1: Type 1 finished square feet
-
-BsmtFinType2: Rating of basement finished area (if multiple types)
-
-       GLQ	Good Living Quarters
-       ALQ	Average Living Quarters
-       BLQ	Below Average Living Quarters	
-       Rec	Average Rec Room
-       LwQ	Low Quality
-       Unf	Unfinshed
-       NA	No Basement
-
-BsmtFinSF2: Type 2 finished square feet
-
-BsmtUnfSF: Unfinished square feet of basement area
-
-TotalBsmtSF: Total square feet of basement area
-
-Heating: Type of heating
-		
-       Floor	Floor Furnace
-       GasA	Gas forced warm air furnace
-       GasW	Gas hot water or steam heat
-       Grav	Gravity furnace	
-       OthW	Hot water or steam heat other than gas
-       Wall	Wall furnace
-		
-HeatingQC: Heating quality and condition
-
-       Ex	Excellent
-       Gd	Good
-       TA	Average/Typical
-       Fa	Fair
-       Po	Poor
-		
-CentralAir: Central air conditioning
-
-       N	No
-       Y	Yes
-		
-Electrical: Electrical system
-
-       SBrkr	Standard Circuit Breakers & Romex
-       FuseA	Fuse Box over 60 AMP and all Romex wiring (Average)	
-       FuseF	60 AMP Fuse Box and mostly Romex wiring (Fair)
-       FuseP	60 AMP Fuse Box and mostly knob & tube wiring (poor)
-       Mix	Mixed
-		
-1stFlrSF: First Floor square feet
- 
-2ndFlrSF: Second floor square feet
-
-LowQualFinSF: Low quality finished square feet (all floors)
-
-GrLivArea: Above grade (ground) living area square feet
-
-BsmtFullBath: Basement full bathrooms
-
-BsmtHalfBath: Basement half bathrooms
-
-FullBath: Full bathrooms above grade
-
-HalfBath: Half baths above grade
-
-Bedroom: Bedrooms above grade (does NOT include basement bedrooms)
-
-Kitchen: Kitchens above grade
-
-KitchenQual: Kitchen quality
-
-       Ex	Excellent
-       Gd	Good
-       TA	Typical/Average
-       Fa	Fair
-       Po	Poor
-       	
-TotRmsAbvGrd: Total rooms above grade (does not include bathrooms)
-
-Functional: Home functionality (Assume typical unless deductions are warranted)
-
-       Typ	Typical Functionality
-       Min1	Minor Deductions 1
-       Min2	Minor Deductions 2
-       Mod	Moderate Deductions
-       Maj1	Major Deductions 1
-       Maj2	Major Deductions 2
-       Sev	Severely Damaged
-       Sal	Salvage only
-		
-Fireplaces: Number of fireplaces
-
-FireplaceQu: Fireplace quality
-
-       Ex	Excellent - Exceptional Masonry Fireplace
-       Gd	Good - Masonry Fireplace in main level
-       TA	Average - Prefabricated Fireplace in main living area or Masonry Fireplace in basement
-       Fa	Fair - Prefabricated Fireplace in basement
-       Po	Poor - Ben Franklin Stove
-       NA	No Fireplace
-		
-GarageType: Garage location
-		
-       2Types	More than one type of garage
-       Attchd	Attached to home
-       Basment	Basement Garage
-       BuiltIn	Built-In (Garage part of house - typically has room above garage)
-       CarPort	Car Port
-       Detchd	Detached from home
-       NA	No Garage
-		
-GarageYrBlt: Year garage was built
-		
-GarageFinish: Interior finish of the garage
-
-       Fin	Finished
-       RFn	Rough Finished	
-       Unf	Unfinished
-       NA	No Garage
-		
-GarageCars: Size of garage in car capacity
-
-GarageArea: Size of garage in square feet
-
-GarageQual: Garage quality
-
-       Ex	Excellent
-       Gd	Good
-       TA	Typical/Average
-       Fa	Fair
-       Po	Poor
-       NA	No Garage
-		
-GarageCond: Garage condition
-
-       Ex	Excellent
-       Gd	Good
-       TA	Typical/Average
-       Fa	Fair
-       Po	Poor
-       NA	No Garage
-		
-PavedDrive: Paved driveway
-
-       Y	Paved 
-       P	Partial Pavement
-       N	Dirt/Gravel
-		
-WoodDeckSF: Wood deck area in square feet
-
-OpenPorchSF: Open porch area in square feet
-
-EnclosedPorch: Enclosed porch area in square feet
-
-3SsnPorch: Three season porch area in square feet
-
-ScreenPorch: Screen porch area in square feet
-
-PoolArea: Pool area in square feet
-
-PoolQC: Pool quality
-		
-       Ex	Excellent
-       Gd	Good
-       TA	Average/Typical
-       Fa	Fair
-       NA	No Pool
-		
-Fence: Fence quality
-		
-       GdPrv	Good Privacy
-       MnPrv	Minimum Privacy
-       GdWo	Good Wood
-       MnWw	Minimum Wood/Wire
-       NA	No Fence
-	
-MiscFeature: Miscellaneous feature not covered in other categories
-		
-       Elev	Elevator
-       Gar2	2nd Garage (if not described in garage section)
-       Othr	Other
-       Shed	Shed (over 100 SF)
-       TenC	Tennis Court
-       NA	None
-		
-MiscVal: $Value of miscellaneous feature
-
-MoSold: Month Sold (MM)
-
-YrSold: Year Sold (YYYY)
-
-SaleType: Type of sale
-		
-       WD 	Warranty Deed - Conventional
-       CWD	Warranty Deed - Cash
-       VWD	Warranty Deed - VA Loan
-       New	Home just constructed and sold
-       COD	Court Officer Deed/Estate
-       Con	Contract 15% Down payment regular terms
-       ConLw	Contract Low Down payment and low interest
-       ConLI	Contract Low Interest
-       ConLD	Contract Low Down
-       Oth	Other
-		
-SaleCondition: Condition of sale
-
-       Normal	Normal Sale
-       Abnorml	Abnormal Sale -  trade, foreclosure, short sale
-       AdjLand	Adjoining Land Purchase
-       Alloca	Allocation - two linked properties with separate deeds, typically condo with a garage unit	
-       Family	Sale between family members
-       Partial	Home was not completed when last assessed (associated with New Homes)
 
 
 %----------------------------------------------------------------------------------------
