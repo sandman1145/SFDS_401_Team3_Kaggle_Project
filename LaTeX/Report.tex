@@ -157,13 +157,13 @@ SalePrice &=& -1271664 + 648.153(YearBuilt) + 47.049(TotalBsmtSF) \\
 & & + 62871(BsmtQual\_Ex)
 \end{eqnarray*}
 The SAS code for the forward model can be found in Listing~\ref{lst:Forward} of Appendix ~\ref{sec:Analysis2}.
-The fit diagnostics and residuals by regressors for sale price can be seen in Fig ~\ref{fig:A2FWAss}. A scatterplot of the predicted values vs the sale price using the features obtained by the forward selection model can be seen in Fig ~\ref{fig:A2FWscatt}.
-\paragraph{Linearity} The linearity assumption is met by the reviewing the scatter plots associated with data. There is no evidence to suggest that these data are not linear based on the scatterplot in Fig ~\ref{fig:A2FWscatt}.
-\paragraph{Constant Variance} The residual plots in Fig ~\ref{fig:A2FWAss} resembles somewhat of a random scatter of points around the 0 line. Also shown is the Studentized Residual Plot which is very similar to the residual plot, although this plot identifies potential outlying observations.
-\paragraph{Normality} Based upon the histograms and q-q plots in Fig ~\ref{fig:A2FWQQ} there is evidence to suggest normality of the data. Additionally the random scatter associated with the residual plots in Fig ~\ref{fig:A2FWAss} also support the normality assumption. The q-q plot does show a trailing off at the begining and end of the data which can suggest that very high or very low home prices may not meet the normality assumption.
-\paragraph{Independence} The independence assumption can be assumed to be maintained since these are all unique sales in a free housing market. 
+The fit diagnostics and residuals by regressors for sale price can be seen in Fig ~\ref{fig:A2FWAss}. A scatterplot of the predicted values vs. the sale price using the features obtained by the forward selection model can be seen in Fig ~\ref{fig:A2FWscatt}.
+\paragraph{Linearity} Visual tests support assumptions of linearity. There is no evidence to suggest that these data are not linear based on the scatterplot in Fig ~\ref{fig:A2FWscatt}.
+\paragraph{Constant Variance} Examining Fig ~\ref{fig:A2FWAss} supports a loose random scatter of points around the origin. 
+\paragraph{Normality} Visual analysis of histograms and q-q plots in Fig ~\ref{fig:A2FWQQ} suggests normality of the data. Additionally the random cloud scatter plotted in Fig ~\ref{fig:A2FWAss} supports the normality assumption. Left and right leaning trailing tails in the q-q plot does suggest that outliers on both ends may not meet the normality assumption. We will address this in later analysis.
+\paragraph{Independence} Century21 Ames indicated all samples are unique sales in a free housing market, supporting assumptions of independence. 
 \paragraph{Outliers and Influential Points}
-\paragraph{outliers / influential observations} There are distinct outliers that can be seen both in the Cook's D and Outlier and Leverage Diagnostics seen in Fig ~\ref{fig:A2FWIP}. Whilte these outliers exist, they do not seem to have too high of leverage in the overall model.
+\paragraph{outliers / influential observations} There are distinct outliers that can be seen both in the Cook's D and Outlier and Leverage Diagnostics seen in Fig ~\ref{fig:A2FWIP}; however, these outliers do not have high enough leverage to engender corrective action.
 
 \subsubsection{Backward}
 \begin{eqnarray*}
@@ -174,13 +174,13 @@ SalePrice &=& 120177 + 35.192(BsmtFinSF1) + 85.189(1stFlrSF) \\
 & & - 615180(RoofMatl\_ClyTile)
 \end{eqnarray*}
 The SAS code for the forward model can be found in Listing~\ref{lst:Backward} of Appendix ~\ref{sec:Analysis2}.
-The fit diagnostics and residuals by regressors for sale price can be seen in Fig ~\ref{fig:A2BWAss}. A scatterplot of the predicted values vs the sale price using the features obtained by the forward selection model can be seen in Fig ~\ref{fig:A2BWscatt}.
-\paragraph{Linearity} The linearity assumption is met by the reviewing the scatter plots associated with data. There is no evidence to suggest that these data are not linear based on the scatterplot in Fig ~\ref{fig:A2BWscatt}.
-\paragraph{Constant Variance} The residual plots in Fig ~\ref{fig:A2BWAss} resembles somewhat of a random scatter of points around the 0 line. Also shown is the Studentized Residual Plot which is very similar to the residual plot, although this plot identifies potential outlying observations.
-\paragraph{Normality} Based upon the histograms and q-q plots in Fig ~\ref{fig:A2BWQQ} there is evidence to suggest normality of the data. Additionally the random scatter associated with the residual plots in Fig ~\ref{fig:A2BWAss} also support the normality assumption. The q-q plot does show a trailing off at the begining and end of the data which can suggest that very high or very low home prices may not meet the normality assumption.
-\paragraph{Independence} The independence assumption can be assumed to be maintained since these are all unique sales in a free housing market. 
+The fit diagnostics and residuals by regressors for sale price can be seen in Fig ~\ref{fig:A2BWAss}. A scatterplot of the predicted values vs. the sale price using the features obtained by the forward selection model can be seen in Fig ~\ref{fig:A2BWscatt}.
+\paragraph{Linearity} Visual tests of the scatter plots in Fig ~\ref{fig:A2BWscatt} meet assumptions of linearity.
+\paragraph{Constant Variance} The residual plots in Fig ~\ref{fig:A2BWAss} support a loose random scatter of points around the origin. The Studentized Residual Plot also supports this assumption while highlighting outlying observations. We will address these in later analysis.
+\paragraph{Normality} Visual analysis of histograms and q-q plots in Fig ~\ref{fig:A2BWQQ} suggests normality of the data. Additionally the random cloud scatter plotted in Fig ~\ref{fig:A2BWAss} also support the normality assumption. supports the normality assumption. Left and right leaning trailing tails in the q-q plot does suggest that outliers on both ends may not meet the normality assumption. We will address this in later analysis.
+\paragraph{Independence} Century21 Ames indicated all samples are unique sales in a free housing market, supporting assumptions of independence. 
 \paragraph{Outliers and Influential Points}
-\paragraph{outliers / influential observations} There are distinct outliers that can be seen both in the Cook's D and Outlier and Leverage Diagnostics seen in Fig ~\ref{fig:A2BWIP}. Whilte these outliers exist, they do not seem to have too high of leverage in the overall model.
+\paragraph{outliers / influential observations} There are distinct outliers that can be seen both in the Cook's D and Outlier and Leverage Diagnostics seen in Fig ~\ref{fig:A2BWIP}; however, these outliers do not have high enough leverage to engender corrective action.
 
 \subsubsection{Stepwise}
 \begin{eqnarray*}
@@ -190,12 +190,12 @@ SalePrice &=& -1271664 + 648.153(YearBuilt) + 47.049(TotalBsmtSF) \\
 \end{eqnarray*}
 The SAS code for the forward model can be found in Listing~\ref{lst:Stepwise} of Appendix ~\ref{sec:Analysis2}
 The fit diagnostics and residuals by regressors for sale price can be seen in Fig ~\ref{fig:A2SWAss}. A scatterplot of the predicted values vs the sale price using the features obtained by the forward selection model can be seen in Fig ~\ref{fig:A2SWscatt}.
-\paragraph{Linearity} The linearity assumption is met by the reviewing the scatter plots associated with data. There is no evidence to suggest that these data are not linear based on the scatterplot in Fig ~\ref{fig:A2SWscatt}.
-\paragraph{Constant Variance} The residual plots in Fig ~\ref{fig:A2SWAss} resembles somewhat of a random scatter of points around the 0 line. Also shown is the Studentized Residual Plot which is very similar to the residual plot, although this plot identifies potential outlying observations.
-\paragraph{Normality} Based upon the histograms and q-q plots in Fig ~\ref{fig:A2SWQQ} there is evidence to suggest normality of the data. Additionally the random scatter associated with the residual plots in Fig ~\ref{fig:A2SWAss} also support the normality assumption. The q-q plot does show a trailing off at the begining and end of the data which can suggest that very high or very low home prices may not meet the normality assumption.
-\paragraph{Independence} The independence assumption can be assumed to be maintained since these are all unique sales in a free housing market. 
+\paragraph{Linearity} Visual tests of the scatter plots in Fig ~\ref{fig:A2SWscatt} meet assumptions of linearity.
+\paragraph{Constant Variance} The residual plots in Fig ~\ref{fig:A2SWAss} support a loose random scatter of points around the origin. The Studentized Residual Plot also supports this assumption while highlighting outlying observations. We will address these in later analysis.
+\paragraph{Normality} Visual analysis of histograms and q-q plots in Fig ~\ref{fig:A2SWQQ} suggests normality of the data. Additionally the random cloud scatter plotted in Fig ~\ref{fig:A2SWAss} also support the normality assumption. supports the normality assumption. Left and right leaning trailing tails in the q-q plot does suggest that outliers on both ends may not meet the normality assumption. We will address this in later analysis
+\paragraph{Independence} Century21 Ames indicated all samples are unique sales in a free housing market, supporting assumptions of independence. 
 \paragraph{Outliers and Influential Points}
-\paragraph{outliers / influential observations} There are distinct outliers that can be seen both in the Cook's D and Outlier and Leverage Diagnostics seen in Fig ~\ref{fig:A2SWIP}. Whilte these outliers exist, they do not seem to have too high of leverage in the overall model.
+\paragraph{outliers / influential observations} There are distinct outliers that can be seen both in the Cook's D and Outlier and Leverage Diagnostics seen in Fig ~\ref{fig:A2SWIP}; however, these outliers do not have high enough leverage to engender corrective action.
 
 \subsubsection{Custom}
 \begin{eqnarray*}
