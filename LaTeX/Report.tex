@@ -202,9 +202,23 @@ The fit diagnostics and residuals by regressors for sale price can be seen in Fi
 
 \subsubsection{Custom}
 \begin{eqnarray*}
-SalePrice &=& 
+SalePrice &=& 280051 + (28.48)GrLivArea + (37.54)1stFlrSF + \\
+& &                   (38.97)2ndFlrSF - (554.60)Age + (86.1448)RemodFactor +\\
+& &	                Neighborhood^* + BldgType^* + SaleCondition ^*+\\
+& &                   OverallQual^* + OverallCond^* + \\
+& &                   HouseStyle^*
 \end{eqnarray*}
+\begin{center}
+\small{ ($^*$ Estimates for categorical variables left out for ease of reading. See Table~\ref{tab:A2CustCI} for more detail.)}\\
+\end{center}
 The SAS code for the custom model can be found in Listing~\ref{lst:Custom} of Appendix ~\ref{sec:Analysis2}
+The fit diagnostics and residuals by regressors for sale price can be seen in Fig ~\ref{fig:A2CustomAss}. A scatterplot of the predicted values vs the sale price using the features obtained by the forward selection model can be seen in Fig ~\ref{fig:A2Customscatt}.
+\paragraph{Linearity} Visual tests of the scatter plots in Fig ~\ref{fig:A2Customscatt} meet assumptions of linearity.
+\paragraph{Constant Variance} The residual plots in Fig ~\ref{fig:A2CustomAss} support a loose random scatter of points around the origin. The Studentized Residual Plot also supports this assumption while highlighting outlying observations. We will address these in later analysis.
+\paragraph{Normality} Visual analysis of histograms and q-q plots in Fig ~\ref{fig:A2CustomQQ} suggests normality of the data. Additionally the random cloud scatter plotted in Fig ~\ref{fig:A2CustomAss} also support the normality assumption. supports the normality assumption. Left and right leaning trailing tails in the q-q plot does suggest that outliers on both ends may not meet the normality assumption. We will address this in later analysis
+\paragraph{Independence} Century21 Ames indicated all samples are unique sales in a free housing market, supporting assumptions of independence. 
+\paragraph{Outliers and Influential Points}
+\paragraph{outliers / influential observations} There are distinct outliers that can be seen both in the Cook's D and Outlier and Leverage Diagnostics seen in Fig ~\ref{fig:A2CustomIP}; however, these outliers do not have high enough leverage to engender corrective action.
 %------------------------------------------------
 
 \subsection{Comparing Competing Models}
@@ -212,7 +226,7 @@ The SAS code for the custom model can be found in Listing~\ref{lst:Custom} of Ap
 	\centering % Centre the table
 \begin{tabular}{|l|l|l|l|}
 \hline
-\textbf{Predictive Models} & \textbf{Adjusted R\textsuperscript{2}} & \textbf{CV Press} & \textbf{Kaggle Score}\\
+\textbf{Predictive Models} & \textbf{Adjusted R\textsuperscript{2}} & \textbf{Press} & \textbf{Kaggle Score}\\
 \hline
 Forward & 0.7789 & 2.37E12 & 0.20306\\
 \hline
@@ -220,16 +234,17 @@ Backward & 0.7846 & 1.87E12 & 0.23930\\
 \hline
 Stepwise & 0.7789 & 2.37E12 & 0.20306\\
 \hline
-CUSTOM & XX & XX & XX\\
+CUSTOM & 0.8456 & 1.59E12 & 0.14286\\
 \hline
 \end{tabular}
 \caption{Analysis Results}
+\label{tab:CCM}
 \end{table}
 
 %------------------------------------------------
 
 \subsection{Conclusion}
-
+\paragraph{} Model selection methods such as the forward, stepwise, and backward methods enabled model performance to be improved by reducing the number of factors to those of statistical significance.  The best results came from modifying the results of these selection methods with domain specific knowledge to generate a more accurate and powerful model. Each model selection method had various strengths as can be seen in Table~\ref{tab:CCM} but the most accurate results came from a combination of methods combined with educated choices for model parameters. 
 %------------------------------------------------
 
 %% ------------------------------------------
@@ -331,6 +346,36 @@ CUSTOM & XX & XX & XX\\
 	\includegraphics[scale=.3]{../graphics/A2SWCI}
 	\caption{Stepwise Selection Model 95\% Confidence Limits.}
 	\label{tab:A2SWCI}
+\end{table}
+\hrulefill
+
+\begin{table}[H] % [h] forces the table to be output where it is defined in the code (it suppresses floating)
+	\centering % Centre the table
+	\includegraphics[scale=.25]{../graphics/A2Custfeatures}
+	\caption{Custom Model Summary.}
+	\label{tab:A2Custsummary}
+\end{table}
+\hrulefill
+\begin{table}[H] % [h] forces the table to be output where it is defined in the code (it suppresses floating)
+	\centering % Centre the table
+	\includegraphics[scale=.3]{../graphics/A2Custresults}\\
+	\includegraphics[scale=.3]{../graphics/A2CustR2}
+	\caption{Custom Model Performance.}
+	\label{tab:A2Custperf}
+\end{table}
+\hrulefill
+\begin{table}[H] % [h] forces the table to be output where it is defined in the code (it suppresses floating)
+	\centering % Centre the table
+	\includegraphics[scale=.4]{../graphics/A2CustKaggle}
+	\caption{Custom Selection Model Performance - Kaggle.}
+	\label{tab:A2CustKaggle}
+\end{table}
+\hrulefill
+\begin{table}[H] % [h] forces the table to be output where it is defined in the code (it suppresses floating)
+	\centering % Centre the table
+	\includegraphics[scale=.3]{../graphics/A2CustCI}
+	\caption{Custom Model 95\% Confidence Limits.}
+	\label{tab:A2CustCI}
 \end{table}
 \hrulefill
 \pagebreak
@@ -558,6 +603,59 @@ CUSTOM & XX & XX & XX\\
 	\caption{Influential Point Plots for Stepwise Selection Model.}
 	\label{fig:A2SWIP}
 \end{figure}
+
+\pagebreak
+
+
+
+\begin{figure}[H] % [h] forces the figure to be output where it is defined in the code (it suppresses floating)
+	\centering
+	\begin{tabular}{| p{0.50\textwidth}|}
+	\hline
+	\\
+	\includegraphics[width=0.50\textwidth]{../graphics/A2Custscatt}\\
+	\hline
+	\end{tabular}	
+	\caption{Scatter Plot Custom Model.}
+	\label{fig:A2Customscatt}
+\end{figure}
+\begin{figure}[H] % [h] forces the figure to be output where it is defined in the code (it suppresses floating)
+	\centering
+	\begin{tabular}{p{0.48\textwidth} p{0.48\textwidth}}
+	\hline
+	\multicolumn{1}{|c}{} &  \multicolumn{1}{c|}{} \\
+		\multicolumn{1}{|c}{\includegraphics[width=0.48\textwidth]{../graphics/A2CustAss1}} &
+		\multicolumn{1}{c|}{\includegraphics[width=0.48\textwidth]{../graphics/A2CustAss2}}\\
+		& \multicolumn{1}{c|}{\includegraphics[width=0.48\textwidth]{../graphics/A2CustAss3}}\\
+		\hline
+	\end{tabular}		
+	\caption{Plots for Custom Selection Model.}
+	\label{fig:A2CustomAss}
+\end{figure}
+\begin{figure}[H] % [h] forces the figure to be output where it is defined in the code (it suppresses floating)
+	\centering
+	\begin{tabular}{p{0.48\textwidth} p{0.48\textwidth}}
+\hline	
+	\multicolumn{1}{|c}{} &  \multicolumn{1}{c|}{} \\
+		\multicolumn{1}{|c}{\includegraphics[width=0.48\textwidth]{../graphics/A2CustHist}} &
+		\multicolumn{1}{c|}{\includegraphics[width=0.48\textwidth]{../graphics/A2Custqq}}\\
+		\hline
+	\end{tabular}		
+	\caption{Normality Plots for Custom Selection Model.}
+	\label{fig:A2CustomQQ}
+\end{figure}
+\begin{figure}[H] % [h] forces the figure to be output where it is defined in the code (it suppresses floating)
+	\centering
+	\begin{tabular}{p{0.48\textwidth} p{0.48\textwidth}}
+\hline	
+	\multicolumn{1}{|c}{} &  \multicolumn{1}{c|}{} \\
+		\multicolumn{1}{|c}{\includegraphics[width=0.48\textwidth]{../graphics/A2Custcooks}} &
+		\multicolumn{1}{c|}{\includegraphics[width=0.48\textwidth]{../graphics/A2Custlev}}\\
+		\hline
+	\end{tabular}		
+	\caption{Influential Point Plots for Custom Selection Model.}
+	\label{fig:A2CustomIP}
+\end{figure}
 \pagebreak
 
 \section{Source Code for Analysis 1}
@@ -621,7 +719,7 @@ CUSTOM & XX & XX & XX\\
 	showstringspaces=false, % Don't put marks in string spaces
 	numbers=left, % Line numbers on left
 	numberstyle=\tiny, % Line numbers styling
-	]{../code/Stepwise.sas}	
+	]{../code/Carls_Custom.sas}	
 %------------------------------------------------
 \pagebreak
 
